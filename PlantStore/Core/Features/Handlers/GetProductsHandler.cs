@@ -20,14 +20,24 @@ namespace PlantStore.Core.Features.Handlers
         {
             try
             {
-                
+                if(string.IsNullOrEmpty(request.SearchTerm))
+                {
                     return await _catalogServices.GetAllProductAsync(request.Page, request.PageSize);
-                
+                }
+                else
+                {
+                    return await _catalogServices.GetProductNameAsync(request.SearchTerm, request.Page, request.PageSize);
+                }
+
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                _logger.LogError(ex, "Ошибка при получении списка товаров");
+                return new PagedResult<ProductsViewModels>
+                {
+                    Items = new List<ProductsViewModels>(),
+                    TotalCount = 0
+                };
             }
         }
     }

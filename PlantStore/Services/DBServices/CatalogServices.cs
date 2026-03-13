@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PlantStore.DB;
 using PlantStore.Services.DBServices.IDBServices;
 using PlantStore.ViewModels;
+using System.Runtime.InteropServices;
 
 namespace PlantStore.Services.DBServices
 {
@@ -19,7 +20,6 @@ namespace PlantStore.Services.DBServices
             _mapper = mapper;
             _logger = logger;
         }
-        //TEST 3
         public async Task<PagedResult<ProductsViewModels>> GetAllProductAsync(int page, int pageSize)
         {
           
@@ -39,6 +39,32 @@ namespace PlantStore.Services.DBServices
             return new PagedResult<ProductsViewModels>
             {
                 Items = clothView,
+                TotalCount = totalCount,
+                PageSize = pageSize,
+                CurrentPage = page,
+            };
+        }
+        public async Task<PagedResult<ProductsViewModels>> GetProductNameAsync(string name,int page, int pageSize)
+        {
+            var totalCount = await _context.Products.CountAsync(
+                x => x.ProductName.ToLower().Contains(name));
+
+            var product = await _context.Products
+                .AsNoTracking()
+                .Where(x => x.ProductName.ToLower().Contains(name))
+                .Include(x => x.Images.Where(x => x.IsMain))
+                .OrderBy (x => x.Id)
+                .Skip((page - 1) * pageSize)
+                .AsSplitQuery()
+                .ToListAsync();
+
+            var productView = _mapper.Map<List<ProductsViewModels>>(product);
+
+            _logger.LogInformation("Поиск {name}: Загружено {cloth.Count} товаров из {totalCount} (страница {page})", name, product.Count, totalCount, page);
+
+            return new PagedResult<ProductsViewModels>
+            {
+                Items = productView,
                 TotalCount = totalCount,
                 PageSize = pageSize,
                 CurrentPage = page,

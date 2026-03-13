@@ -1,93 +1,5 @@
 ﻿body {
 }
-
-body {
-}
-
-.menu-product {
-    display: grid;
-    grid-template-columns: 150px 1fr; /* Меню 250px, карточки занимают остальное */
-    gap: 25px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-.menu-sidebar {
-    border-radius: 16px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    height: fit-content;
-    position: sticky;
-    top: 20px; /* Меню прилипает при прокрутке */
-    align-self: start; /* Важно для sticky */
-}
-
-.products-main {
-    min-width: 0; /* Предотвращает переполнение */
-}
-
-.product-search {
-    margin-bottom: 1rem;
-    width: 100%;
-}
-
-.search-container {
-    position: relative;
-    margin: 0 auto;
-}
-
-.search-input {
-    width: 100%;
-    padding: 10px 45px 10px 15px;
-    border-radius: 30px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    background-color: #302F2D;
-    color: white;
-    border: none;
-}
-
-    .search-input:focus {
-        outline: none;
-        border-color: #1e88e5;
-    }
-
-    .search-input::placeholder {
-        color: #999;
-    }
-
-.search-button {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #191918;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-}
-
-    .search-button:hover {
-        background-color: #1565c0;
-    }
-
-    .search-button svg {
-        stroke: white;
-    }
-
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(200px, 1fr));
-    gap: 10px;
-}
-
-
 /* Карточка товара */
 .product-card {
     border-radius: 0px;
@@ -103,7 +15,7 @@ body {
     border-radius: 16px;
     position: relative;
     width: 100%;
-    padding-bottom: 150%; /* Соотношение 4:3 (высота = 75% от ширины) */
+    padding-bottom: 75%; /* Соотношение 4:3 (высота = 75% от ширины) */
     background: linear-gradient(45deg, #f3f4f6 25%, #e5e7eb 25%, #e5e7eb 50%, #f3f4f6 50%, #f3f4f6 75%, #e5e7eb 75%);
     background-size: 20px 20px;
     overflow: hidden;
@@ -150,79 +62,4 @@ body {
     margin-bottom: 15px;
     flex: 1;
     text-align: right;
-}
-
-@media (max-width: 1400px) {
-    .products-grid {
-        grid-template-columns: repeat(5, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
-    }
-}
-
-@media (max-width: 1200px) {
-    .products-grid {
-        grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
-    }
-}
-
-@media (max-width: 1000px) {
-    .products-grid {
-        grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
-    }
-}
-/* Адаптация для планшетов */
-@media (max-width: 900px) {
-}
-
-/* Адаптация для мобильных устройств */
-@media (max-width: 768px) {
-    .products-grid {
-        grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
-    }
-
-    .menu-sidebar {
-        position: static; /* Отключаем прилипание */
-        width: 100%; /* На всю ширину */
-        margin-bottom: 10px;
-    }
-
-    .products-main {
-        width: 100%;
-    }
-
-    /* Адаптация сетки карточек под мобильные */
-    .products-grid {
-        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-        gap: 10px;
-    }
-}
-
-/* Для очень маленьких экранов */
-@media (max-width: 450px) {
-    .products-grid {
-        grid-template-columns: repeat(2, minmax(130px, 1fr));
-        gap: 8px;
-    }
-
-    .product-info {
-        padding: 12px;
-    }
-
-    .product-title {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 300px) {
-    .products-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-        gap: 8px;
-    }
-
-    .product-info {
-        padding: 12px;
-    }
-
-    .product-title {
-        font-size: 1rem;
-    }
 }

@@ -5,3 +5,54 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+<main class="product-main">
+    <div class="product-search">
+        <div class="search-container">
+            <form method="get">
+                <input type="text"
+                       name="search"
+                       value="@Model.Search"
+                       class="search-input"
+                       placeholder="Поиск одежды...">
+                <button class="search-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    @if (Model.Products == null || !Model.Products.Any())
+    {
+        <p>Товары не найдены по запросу</p>
+    }
+    else
+    {
+        <div class="products-grid" id="productsGrid">
+            @await Html.PartialAsync("_ProductItem", Model.Products)
+        </div>
+        @if (Model.HasMorePage)
+        {
+            <div class="load-more-container" id="loadMoreContainer">
+                <button class="load-more-button"
+                        id="loadMoreBtn"
+                        data-page="2"
+                        data-search="@Model.Search">
+                    Загрузить ещё
+                </button>
+                <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>Загрузка...</span>
+                </div>
+            </div>
+        }
+    }
+</main>
+
+<input type="hidden" id="totalItems" value="@Model.TotalItems" />
+<input type="hidden" id="pageSize" value="6" />
+
+@section Scripts {
+    <script src="~/js/PageScript.js?v=@DateTime.Now.Ticks"></script>
+}

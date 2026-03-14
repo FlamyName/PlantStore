@@ -70,5 +70,37 @@ namespace PlantStore.Services.DBServices
                 CurrentPage = page,
             };
         }
+        public async Task<ProductIdViewModel?> GetProductByIdAsync(int id)
+        {
+            var product = await _context.Products
+                .AsNoTracking()
+                .Include(x => x.Images.OrderBy(x => x.DisplayOrder))
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (product == null)
+            {
+                _logger.LogInformation("Товар с Id {id} не найден", id);
+                return null!;
+            }
+
+            var productView = new ProductIdViewModel
+            {
+                Id = product.Id,
+                ProductName = product.ProductName,
+                Price = product.Price,
+                Description = product.Description,
+                Images = product.Images.Select(x => new ProductImageViewModel
+                {
+                    Id = x.Id,
+                    DisplayOrder = x.DisplayOrder,
+                    IsMain = x.IsMain,
+                    Url = x.Url,
+                }).ToList()
+            };
+
+            _logger.LogInformation("Загружен товар {productName} (Id {id} c {imageCount} изображениями", product.ProductName, id, product.Images.Count);
+
+            return productView;
+        }
     }
 }

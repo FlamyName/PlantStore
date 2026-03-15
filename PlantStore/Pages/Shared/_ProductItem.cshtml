@@ -5,7 +5,7 @@
 
 @foreach (var products in Model)
 {
-    <a asp-page="/Cloth/ClothId"
+    <a asp-page="/Plant"
        asp-route-id="@products.Id"
        class="product-card-link"
        target="_blank"
@@ -24,3 +24,4 @@
         </div>
     </a>
 }
+

@@ -1,0 +1,138 @@
+﻿body {
+}
+.product-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+/* Левая часть: галерея */
+.product-gallery {
+    flex: 1 1 500px; /* Минимальная ширина 500px, может расти */
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+/* Список миниатюр */
+.thumbnail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.thumbnail {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+    .thumbnail:hover {
+        border-color: #007bff;
+    }
+    .thumbnail.active {
+        border-color: #007bff;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+    }
+
+/* Большое изображение */
+.main-image {
+    flex-grow: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .main-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+    }
+
+/* Правая часть: информация */
+.product-info {
+    flex: 1 1 300px; /* Минимальная ширина 300px */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.2;
+    color: white;
+}
+
+.product-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: white;
+}
+
+.product-price {
+    margin-top: auto;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #007bff;
+}
+
+
+/* Адаптивность */
+@media screen and (max-width: 900px) {
+    .product-card {
+        padding: 20px;
+        gap: 30px;
+    }
+
+    .product-gallery {
+        flex: 1 1 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .product-gallery {
+        flex-direction: column;
+    }
+
+    .thumbnail-list {
+        flex-direction: row;
+        width: 100%;
+        order: 2; /* Миниатюры снизу на мобильных */
+    }
+
+    .thumbnail {
+        width: calc(25% - 7.5px); /* 4 штуки в ряд с отступами */
+    }
+
+    .main-image {
+        order: 1;
+    }
+
+    .product-title {
+        font-size: 1.5rem;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+    }
+
+    .add-to-cart {
+        width: 100%;
+        text-align: center;
+    }
+}

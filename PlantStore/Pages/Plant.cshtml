@@ -1,4 +1,46 @@
-﻿@page "{id : int}"
+﻿@page "{id:int}"
 @model PlantStore.Pages.PlantModel
 @{
+}
+
+@if (Model.Product != null)
+{
+    <div class="product-card">
+        <!-- Левая часть: галерея -->
+        <div class="product-gallery">
+            <!-- Миниатюры (вертикально слева) -->
+            <div class="thumbnail-list">
+                @foreach(var image in Model.Product.Images)
+                {
+                    <img src="@image.Url"
+                         alt="Миниатюра @image.DisplayOrder"
+                         class="thumbnail @(image.IsMain ? "active" : "")" />
+                }
+            </div>
+            <!-- Большая картинка -->
+            <div class="main-image">
+                <img id="mainProductImage"
+                     src="@(Model.Product.Images.FirstOrDefault(x => x.IsMain)?.Url ?? "/images/default.jpg")"
+                     alt="Основное изображение товара" />
+            </div>
+        </div>
+
+        <!-- Правая часть: информация -->
+        <div class="product-info">
+            <h1 class="product-title">@Model.Product.ProductName</h1>
+            <p class="product-description">
+               @Model.Product.Description
+            </p>
+            <p class="product-price">@Model.Product.Price ₽</p>
+        </div>
+    </div>
+}
+else
+{
+    ViewData["Title"] = "Товар не найден";
+    <p>@ViewData["Title"]</p>
+}
+
+@section Scripts {
+    <script src="~/js/MiniImages.js" asp-append-version="true"></script>
 }

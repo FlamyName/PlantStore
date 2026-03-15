@@ -10,7 +10,7 @@ namespace PlantStore.Pages
     {
         private readonly IMediator _mediator;
         private readonly ILogger<PlantModel> _logger;
-        
+
         public ProductIdViewModel? Product { get; set; }
         
         public PlantModel(IMediator mediator, ILogger<PlantModel> logger)

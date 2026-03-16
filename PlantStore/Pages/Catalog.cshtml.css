@@ -55,10 +55,10 @@
 
 .search-button {
     position: absolute;
-    right: 5px;
+    right: 2px;
     top: 50%;
     transform: translateY(-50%);
-    background: #191918;
+    background: #808000;
     border: none;
     width: 40px;
     height: 40px;
@@ -71,7 +71,10 @@
 }
 
     .search-button:hover {
-        background-color: #1565c0;
+        background-color: #6B8E23   ;
+    }
+    .search-button:active {
+        background-color: #4D4234;
     }
 
     .search-button svg {
@@ -170,12 +173,6 @@
     }
 }
 
-
-
-
-
-/* load-more-button.css */
-
 /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
 .load-more-container {
     display: flex;
@@ -195,7 +192,7 @@
     font-weight: 500;
     color: #ffffff;
     border: none;
-    background: #302F2D; /* Цвет шапки */
+    background: #808000; /* Цвет шапки */
     border-radius: 60px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
@@ -223,7 +220,7 @@
     }
 
     .load-more-button:hover {
-        background: #3a3937;
+        background: #6B8E23;
         border-color: rgba(255, 255, 255, 0.15);
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
@@ -235,7 +232,7 @@
 
     .load-more-button:active {
         transform: translateY(0);
-        background: #262522;
+        background: #4D4234;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         transition: all 0.1s;
     }

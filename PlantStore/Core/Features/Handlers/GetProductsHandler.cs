@@ -20,9 +20,17 @@ namespace PlantStore.Core.Features.Handlers
         {
             try
             {
-                if(string.IsNullOrEmpty(request.SearchTerm))
+                if (string.IsNullOrEmpty(request.SearchTerm))
                 {
                     return await _catalogServices.GetAllProductAsync(request.Page, request.PageSize);
+                }
+                else if (request.SearchTerm.Length > 50)
+                {
+                    return new PagedResult<ProductsViewModels>
+                    {
+                        Items = new List<ProductsViewModels>(),
+                        TotalCount = 0
+                    };
                 }
                 else
                 {

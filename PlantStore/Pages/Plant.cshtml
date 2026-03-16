@@ -1,6 +1,7 @@
 ﻿@page "{id:int}"
 @model PlantStore.Pages.PlantModel
 @{
+    ViewData["Title"] = Model.Product!.ProductName;
 }
 
 @if (Model.Product != null)
@@ -10,11 +11,16 @@
         <div class="product-gallery">
             <!-- Миниатюры (вертикально слева) -->
             <div class="thumbnail-list">
+                @{
+                    int thumbIndex = 0;
+                }
                 @foreach(var image in Model.Product.Images)
                 {
                     <img src="@image.Url"
                          alt="Миниатюра @image.DisplayOrder"
-                         class="thumbnail @(image.IsMain ? "active" : "")" />
+                         class="thumbnail @(image.IsMain ? "active" : "")"
+                         data-index="@thumbIndex" />
+                    thumbIndex++;
                 }
             </div>
             <!-- Большая картинка -->
@@ -25,15 +31,45 @@
             </div>
         </div>
 
+        <!-- Мобильный слайдер (показывается только на мобильных) -->
+        <div class="mobile-slider">
+            <div class="slider-container">
+                <div class="slider-track">
+                    @{
+                        int slideIndex = 0;
+                    }
+                    @foreach(var image in Model.Product.Images)
+                    {
+                        <div class="slider-slide" data-index="@slideIndex">
+                            <img src="@image.Url" 
+                                 alt="Слайд @slideIndex"
+                                 loading="lazy" />
+                        </div>
+                        slideIndex++;
+                    }
+                </div>
+                
+                @if (Model.Product.Images.Count > 1)
+                {
+                    <button class="slider-nav prev" aria-label="Предыдущее изображение">❮</button>
+                    <button class="slider-nav next" aria-label="Следующее изображение">❯</button>
+                }
+            </div>
+            
+            
+        </div>
+
+
         <!-- Правая часть: информация -->
         <div class="product-info">
             <h1 class="product-title">@Model.Product.ProductName</h1>
             <p class="product-description">
                @Model.Product.Description
-            </p>
-            <p class="product-price">@Model.Product.Price ₽</p>
+            </p>@* 
+            <p class="product-price">@Model.Product.Price ₽</p> *@
         </div>
     </div>
+
 }
 else
 {

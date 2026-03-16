@@ -16,7 +16,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm text-white mb-3">
             <div class="container">
-                <a class="navbar-brand text-white" asp-area="" asp-page="/Index">PlantStore</a>
+                <a class="navbar-brand text-white" asp-area="" asp-page="/Index">Растения</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,10 +24,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white @(currentPage == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white @(currentPage == "/Privacy" ? "active" : "")" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-white @(currentPage == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Стартовая страница</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white @(currentPage == "/Catalog" ? "active" : "")" asp-area="" asp-page="/Catalog">Каталог</a>

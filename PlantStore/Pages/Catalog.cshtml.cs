@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PlantStore.Core.Features.Queries;
 using PlantStore.ViewModels;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 
 namespace PlantStore.Pages
@@ -18,6 +19,8 @@ namespace PlantStore.Pages
         public int CurrentPage { get; set; } = 1;
 
         [FromQuery]
+        [Required]
+        [StringLength(50, ErrorMessage = "Поисковый запрос должен содержать максимум 50 символов")]
         public string? Search {  get; set; }
         public bool HasMorePage => TotalItems > CurrentPage * PageSize;
 

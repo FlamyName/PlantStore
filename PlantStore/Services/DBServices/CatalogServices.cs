@@ -29,6 +29,7 @@ namespace PlantStore.Services.DBServices
                 .AsNoTracking()
                 .Include(x => x.Images.Where(x => x.IsMain))
                 .OrderBy(x => x.Id)
+                .Reverse()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .AsSplitQuery()
@@ -54,6 +55,7 @@ namespace PlantStore.Services.DBServices
                 .Where(x => x.ProductName.ToLower().Contains(name))
                 .Include(x => x.Images.Where(x => x.IsMain))
                 .OrderBy (x => x.Id)
+                .Reverse()
                 .Skip((page - 1) * pageSize)
                 .AsSplitQuery()
                 .ToListAsync();

@@ -12,7 +12,7 @@ namespace PlantStore.Pages
     {
         private readonly IMediator _mediator;
         private readonly ILogger<CatalogModel> _logger;
-        private const int PageSize = 6;
+        private const int PageSize = 20;
 
         public IEnumerable<ProductsViewModels>? Products { get; set; }
         public int TotalItems { get; set; }

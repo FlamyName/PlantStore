@@ -3,7 +3,7 @@
 
 .menu-product {
     display: grid;
-    grid-template-columns: 150px 1fr; /* Меню 250px, карточки занимают остальное */
+    grid-template-columns: 150px 1fr;
     gap: 25px;
     max-width: 1400px;
     margin: 0 auto;
@@ -15,12 +15,11 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     height: fit-content;
     position: sticky;
-    top: 20px; /* Меню прилипает при прокрутке */
-    align-self: start; /* Важно для sticky */
+    align-self: start;
 }
 
 .products-main {
-    min-width: 0; /* Предотвращает переполнение */
+    min-width: 0;
 }
 
 .product-search {
@@ -90,34 +89,33 @@
 
 @media (max-width: 1400px) {
     .products-grid {
-        grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
+        grid-template-columns: repeat(4, minmax(200px, 1fr)); 
     }
 }
 
 @media (max-width: 1200px) {
     .products-grid {
-        grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
+        grid-template-columns: repeat(3, minmax(200px, 1fr)); 
     }
 }
 
 @media (max-width: 1000px) {
     .products-grid {
-        grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
+        grid-template-columns: repeat(2, minmax(200px, 1fr)); 
     }
 }
-/* Адаптация для планшетов */
 @media (max-width: 900px) {
 }
 
-/* Адаптация для мобильных устройств */
 @media (max-width: 768px) {
     .products-grid {
-        grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Всегда 5 колонок на больших экранах */
+        grid-template-columns: repeat(2, minmax(200px, 1fr)); 
+
     }
 
     .menu-sidebar {
-        position: static; /* Отключаем прилипание */
-        width: 100%; /* На всю ширину */
+        position: static;
+        width: 100%;
         margin-bottom: 10px;
     }
 
@@ -125,7 +123,6 @@
         width: 100%;
     }
 
-    /* Адаптация сетки карточек под мобильные */
     
 }
 @media (max-width: 576px) {
@@ -142,7 +139,6 @@
         font-size: 1rem;
     }
 }
-/* Для очень маленьких экранов */
 @media (max-width: 450px) {
     .products-grid {
         grid-template-columns: repeat(2, minmax(130px, 1fr));
@@ -173,7 +169,6 @@
     }
 }
 
-/* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
 .load-more-container {
     display: flex;
     flex-direction: column;
@@ -184,7 +179,6 @@
     position: relative;
 }
 
-/* ===== СОВРЕМЕННАЯ КНОПКА ===== */
 .load-more-button {
     position: relative;
     padding: 16px 48px;
@@ -192,7 +186,7 @@
     font-weight: 500;
     color: #ffffff;
     border: none;
-    background: #808000; /* Цвет шапки */
+    background: #808000; 
     border-radius: 60px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
@@ -205,7 +199,6 @@
     white-space: nowrap;
 }
 
-    /* Эффект градиента при наведении */
     .load-more-button::before {
         content: '';
         position: absolute;
@@ -245,7 +238,6 @@
         pointer-events: none;
     }
 
-/* ===== ДОБАВЛЯЕМ ИКОНКУ (СТРЕЛКИ) ===== */
 .load-more-button {
     display: inline-flex;
     align-items: center;
@@ -264,20 +256,6 @@
         opacity: 0.8;
     }
 
-    .load-more-button:hover::after {
-        transform: translateY(3px);
-        opacity: 1;
-    }
-
-    /* ===== АЛЬТЕРНАТИВНАЯ ИКОНКА (КРУГОВАЯ) ===== */
-    .load-more-button.circular::after {
-        content: '';
-        width: 18px;
-        height: 18px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 12A11 11 0 1 1 13 1'%3E%3C/path%3E%3C/svg%3E");
-    }
-
-/* ===== СПИННЕР ЗАГРУЗКИ ===== */
 .loading-spinner {
     display: flex;
     align-items: center;
@@ -319,36 +297,6 @@
     opacity: 0.8;
 }
 
-/* ===== СЧЕТЧИК ТОВАРОВ ===== */
-.load-more-stats {
-    margin-top: 12px;
-    color: #999999;
-    font-size: 14px;
-    font-weight: 400;
-    text-align: center;
-}
-
-    .load-more-stats span {
-        color: #ffffff;
-        font-weight: 500;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 2px 8px;
-        border-radius: 20px;
-        margin: 0 2px;
-    }
-
-/* ===== СОСТОЯНИЕ "ВСЕ ЗАГРУЖЕНО" ===== */
-.load-more-container.all-loaded {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-    .load-more-container.all-loaded .load-more-button {
-        transform: scale(0.9);
-    }
-
-/* ===== АНИМАЦИЯ ПОЯВЛЕНИЯ ===== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -365,63 +313,6 @@
     animation: fadeInUp 0.4s ease;
 }
 
-/* ===== ВАРИАНТ 2: ОБВОДКА (OUTLINE) ===== */
-.load-more-button.outline {
-    background: transparent;
-    border: 2px solid #404040;
-    color: #ffffff;
-    box-shadow: none;
-}
-
-    .load-more-button.outline:hover {
-        background: rgba(255, 255, 255, 0.02);
-        border-color: #666666;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .load-more-button.outline::before {
-        display: none;
-    }
-
-    .load-more-button.outline::after {
-        opacity: 0.7;
-    }
-
-/* ===== ВАРИАНТ 3: КОНТРАСТНЫЙ ===== */
-.load-more-button.contrast {
-    background: #ffffff;
-    color: #191918;
-    border: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-    .load-more-button.contrast:hover {
-        background: #f5f5f5;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-    }
-
-    .load-more-button.contrast::after {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23191918' stroke-width='2'%3E%3Cpath d='M7 13l5 5 5-5M7 7l5 5 5-5'%3E%3C/path%3E%3C/svg%3E");
-    }
-
-    .load-more-button.contrast::before {
-        background: linear-gradient( 120deg, transparent 0%, transparent 40%, rgba(0, 0, 0, 0.05) 50%, transparent 60%, transparent 100% );
-    }
-
-/* ===== ВАРИАНТ 4: СВЕТЯЩИЙСЯ ===== */
-.load-more-button.glow {
-    background: #302F2D;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-}
-
-    .load-more-button.glow:hover {
-        box-shadow: 0 0 30px rgba(255, 255, 255, 0.1), 0 8px 20px rgba(0, 0, 0, 0.3);
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-
-/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
 @media (max-width: 768px) {
     .load-more-button {
         padding: 14px 40px;
@@ -447,20 +338,14 @@
     }
 }
 
-/* ===== DARK MODE УЖЕ УЧТЕН ===== */
 @media (prefers-color-scheme: dark) {
-    /* Все цвета уже адаптированы под ваш фон */
+   
 }
 
-/* ===== ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ ===== */
-
-/* Эффект пульсации при фокусе */
 .load-more-button:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
-
-/* Эффект для спиннера при долгой загрузке */
 @keyframes pulse {
     0%, 100% {
         opacity: 0.6;

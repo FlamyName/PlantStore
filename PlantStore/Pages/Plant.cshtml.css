@@ -6,7 +6,6 @@
     margin: 0 auto;
 }
 
-/* Левая часть: галерея */
 .product-gallery {
     flex: 1 1 600px;
     display: flex;
@@ -14,7 +13,6 @@
     gap: 15px;
 }
 
-/* Список миниатюр (для десктопа) */
 .thumbnail-list {
     display: flex;
     flex-direction: column;
@@ -45,7 +43,6 @@
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
     }
 
-/* Большое изображение (для десктопа) */
 .main-image {
     flex-grow: 1;
     border-radius: 12px;
@@ -60,7 +57,6 @@
         display: block;
     }
 
-/* Мобильный слайдер */
 .mobile-slider {
     display: none;
     width: 100%;
@@ -95,7 +91,6 @@
     }
 
 
-/* Кнопки навигации */
 .slider-nav {
     position: absolute;
     top: 50%;
@@ -131,7 +126,6 @@
         display: none;
     }
 
-/* Правая часть: информация */
 .product-info {
     flex: 1 1 300px;
     display: flex;
@@ -145,10 +139,13 @@
     color: white;
     line-height: 1.2;
     margin: 0;
-    background-color: #808000;
-    border-radius: 5px;
+    background: rgba(128, 129, 0, 0.45);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     margin-top: 20px;
     padding: 10px;
+    word-wrap: break-word;
 }
 
 .product-description {
@@ -158,9 +155,11 @@
     margin: 0;
     text-align: justify;
     text-justify: inter-word;
-    background-color: #4D4234;
-    border-radius: 5px;
+    background: rgba(77, 66, 52);
+    border-radius: 20px;
     padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    word-wrap: break-word;
 }
 
 .product-price {
@@ -170,7 +169,6 @@
     margin: 0;
 }
 
-/* Адаптивность */
 @media screen and (max-width: 1000px) {
     .product-gallery {
         flex-direction: column;
@@ -208,12 +206,10 @@
     .product-card {
     }
 
-    /* Скрываем десктопную галерею */
     .product-gallery {
         display: none;
     }
 
-    /* Показываем мобильный слайдер */
     .mobile-slider {
         display: block;
     }
@@ -255,7 +251,6 @@
     }
 }
 
-/* Для очень маленьких экранов */
 @media screen and (max-width: 320px) {
     .thumbnail {
         width: calc(33.333% - 6.66px);
@@ -263,12 +258,6 @@
 }
 
 
-
-
-
-/* Добавьте в конец CSS файла */
-
-/* Мобильная информация */
 .product-meta {
     display: none;
     font-size: 0.9rem;
@@ -286,7 +275,6 @@
     }
 }
 
-/* Стили для ошибки */
 .error-container {
     text-align: center;
     padding: 50px 20px;

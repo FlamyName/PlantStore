@@ -1,8 +1,9 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Стартовая страница";
+    ViewData["Title"] = "Новости";
 }
 
-<div class="text-center">
+<div class="news-grid">
+    @await Html.PartialAsync("_NewsItem")
 </div>

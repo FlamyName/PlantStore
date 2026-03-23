@@ -37,6 +37,8 @@ namespace PlantStore.Services.DBServices
 
             var clothView = _mapper.Map<List<ProductsViewModels>>(product);
 
+            _logger.LogInformation(" Загружено {cloth.Count} товаров из {totalCount} (страница {page})", product.Count, totalCount, page);
+
             return new PagedResult<ProductsViewModels>
             {
                 Items = clothView,
@@ -100,7 +102,7 @@ namespace PlantStore.Services.DBServices
                 }).ToList()
             };
 
-            _logger.LogInformation("Загружен товар {productName} (Id {id} c {imageCount} изображениями", product.ProductName, id, product.Images.Count);
+            _logger.LogInformation("Загружен товар {productName} (Id {id} c {imageCount} изображениями)", product.ProductName, id, product.Images.Count);
 
             return productView;
         }

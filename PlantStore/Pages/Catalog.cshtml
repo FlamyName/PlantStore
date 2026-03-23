@@ -11,7 +11,7 @@
                        name="search"
                        value="@Model.Search"
                        class="search-input"
-                       placeholder="Поиск одежды..."
+                       placeholder="Поиск..."
                        maxlength="50">
                 <button class="search-button">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -51,7 +51,7 @@
 </main>
 
 <input type="hidden" id="totalItems" value="@Model.TotalItems" />
-<input type="hidden" id="pageSize" value="6" />
+<input type="hidden" id="pageSize" value="20" />
 
 @section Scripts {
     <script src="~/js/PageScript.js?v=@DateTime.Now.Ticks"></script>

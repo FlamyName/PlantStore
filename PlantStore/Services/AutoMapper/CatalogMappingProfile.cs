@@ -11,6 +11,7 @@ namespace PlantStore.Services.AutoMapper
             CreateMap<Products, ProductsViewModels>()
                 .ForMember(x => x.Url,
                     y => y.MapFrom(a => a.Images.FirstOrDefault(i => i.IsMain)!.Url));
+            CreateMap<News, NewsViewModel>();
         }
     }
 }

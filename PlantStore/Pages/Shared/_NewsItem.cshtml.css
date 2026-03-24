@@ -1,5 +1,14 @@
 ﻿body {
 }
+.month-news{
+    text-align:center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.month {
+    color: #18ff86;
+}
+
 .news-container {
     max-width: 1350px;
     width: 100%;
@@ -9,7 +18,8 @@
     padding: 10px;
     box-shadow: 0 20px 30px -20px rgba(0, 0, 0, 1);
     transform: translateY(-4px);
-    background-color: rgba(34, 34, 32, 1)
+    background-color: rgba(34, 34, 32, 1);
+    margin-bottom: 40px;
 }
 
 .news-title {
@@ -18,7 +28,7 @@
 .title {
     background: rgba(128, 129, 0, 0.45);
     padding: 10px;
-    border-radius: 16px;
+    border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     font-size: 28px;
     font-weight: 700;
@@ -61,7 +71,6 @@
         margin: 0;
         font-size: 16px;
         line-height: 1.6;
-        text-align: justify;
         word-wrap: break-word;
         word-break: break-word;
         overflow-wrap: break-word;
@@ -84,3 +93,12 @@
         overflow-wrap: break-word;
         white-space: normal;
     }
+
+@media(max-width: 1200px) {
+    .news-info {
+        flex-direction: column;
+    }
+    .news-image{
+        width: 100%;
+    }
+}

@@ -11,5 +11,6 @@ namespace PlantStore.DB
 
         public DbSet<Products> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<News> News { get; set; }
     }
 }

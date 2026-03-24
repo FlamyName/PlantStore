@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddMediatR(typeof(Program).Assembly);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ICatalogServices, CatalogServices>();
+builder.Services.AddScoped<INewsServices, NewsServices>();
 
 var app = builder.Build();
 

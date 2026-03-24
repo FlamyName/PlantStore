@@ -4,6 +4,28 @@
     ViewData["Title"] = "Новости";
 }
 
-<div class="news-grid">
-    @await Html.PartialAsync("_NewsItem")
+<div class="news-grid" id="newsGrid">
+    @await Html.PartialAsync("_NewsItem", Model.News)
 </div>
+@if (Model.HasMorePage)
+{
+    <div class="load-more-container" id="loadMoreContainer">
+        <button class="load-more-button"
+                id="loadMoreBtn"
+                data-page="2">
+            Загрузить ещё
+        </button>
+        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+            <div class="spinner"></div>
+            <span>Загрузка...</span>
+        </div>
+    </div>
+}
+
+
+<input type="hidden" id="totalItems" value="@Model.TotalItems" />
+<input type="hidden" id="pageSize" value="12" />
+
+@section Scripts {
+    <script src="~/js/PageScript.js?v=@DateTime.Now.Ticks"></script>
+}

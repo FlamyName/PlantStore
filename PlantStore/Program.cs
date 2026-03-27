@@ -1,3 +1,4 @@
+using BusinessLogic;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PlantStore.DB;
@@ -16,13 +17,7 @@ builder.Services.Configure<RouteOptions>(options =>
     options.AppendTrailingSlash = true;
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddMediatR(typeof(Program).Assembly);
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddScoped<ICatalogServices, CatalogServices>();
-builder.Services.AddScoped<INewsServices, NewsServices>();
+builder.Services.AddBusinessLogic(builder.Configuration);
 
 var app = builder.Build();
 

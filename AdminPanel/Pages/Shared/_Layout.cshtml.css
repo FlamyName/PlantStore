@@ -9,6 +9,7 @@ header {
     flex-direction: column;
     margin: 0; 
     padding: 0;
+    width: 225px;
 }
 
 .navbar {
@@ -22,6 +23,14 @@ header {
 
 .navbar-nav{
     flex-direction: column;
+}
+
+.navbar-collapse{
+    width: 100%;
+}
+
+.nav-item{
+    text-align: center;
 }
 
 a.navbar-brand {
@@ -52,3 +61,19 @@ button.accept-policy {
     max-width: 100%;
 }
 
+@media (max-width: 576px) {
+    .all-container {
+        display: unset;
+        min-height: unset;
+    }
+    header{
+        height: unset;
+        width: unset;
+    }
+    .navbar{
+        flex: unset;
+    }
+    .container{
+        flex-direction: unset;
+    }
+}

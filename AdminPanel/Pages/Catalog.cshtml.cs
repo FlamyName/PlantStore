@@ -6,7 +6,7 @@ using PlantStore.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 
-namespace AdminPanel.Pages
+namespace PlantStore.Pages
 {
     public class CatalogModel : PageModel
     {

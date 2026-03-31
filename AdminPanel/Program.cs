@@ -1,3 +1,5 @@
+using BusinessLogic;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +11,8 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseQueryStrings = true;
     options.AppendTrailingSlash = true;
 });
+
+builder.Services.AddBusinessLogic(builder.Configuration);
 
 var app = builder.Build();
 

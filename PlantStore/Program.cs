@@ -1,9 +1,4 @@
 using BusinessLogic;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using PlantStore.DB;
-using PlantStore.Services.DBServices;
-using PlantStore.Services.DBServices.IDBServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

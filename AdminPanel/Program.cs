@@ -12,6 +12,7 @@ builder.Services.Configure<RouteOptions>(options =>
     options.AppendTrailingSlash = true;
 });
 
+
 builder.Services.AddBusinessLogic(builder.Configuration);
 
 var app = builder.Build();

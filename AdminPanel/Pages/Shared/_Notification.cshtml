@@ -1,0 +1,10 @@
+﻿@using BusinessLogic.ViewModels
+@model NotificationViewModel
+
+@if (!string.IsNullOrEmpty(Model?.Message))
+{
+    <div class="notification @Model.Type">
+        <span class="notification-message">@Model.Message</span>
+        <button class="notification-close">&times;</button>
+    </div>
+}

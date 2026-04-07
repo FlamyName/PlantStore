@@ -1,4 +1,11 @@
-﻿.all-container {
+﻿#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.all-container {
     display: flex;
     min-height: 100vh;
 }

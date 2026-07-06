@@ -32,7 +32,7 @@
     // === Показать уведомление из текста (через Partial View) ===
     window.showMessage = function (message, type) {
         $.ajax({
-            url: '/Privacy?handler=GetNotification',
+            url: '/Notification?handler=GetNotification',
             type: 'POST',
             data: {
                 message: message,

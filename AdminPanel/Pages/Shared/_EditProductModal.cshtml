@@ -1,0 +1,51 @@
+﻿@using PlantStore.ViewModels
+@model ProductIdViewModel
+
+<div id="editProductModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Редактировать товар</h3>
+            <span class="close-btn">&times;</span>
+        </div>
+
+        <form id="editProductForm" method="post">
+            <input type="hidden" id="productId" name="Id" value="@Model?.Id" />
+
+            <div class="form-group">
+                <label for="productName">Название товара:</label>
+                <input type="text" id="productName" name="Name" value="@Model?.ProductName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="productImage">Картинки</label>
+                <div class="mini-images">
+                    @foreach(var images in Model!.Images)
+                    {
+                        <img src="@images.Url">
+                        <img />
+                    }
+                    @foreach (var images in Model!.Images)
+                    {
+                        <img src="@images.Url">
+                        <img />
+                    }
+                    @foreach (var images in Model!.Images)
+                    {
+                        <img src="@images.Url">
+                        <img />
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="productDescription">Описание:</label>
+                <textarea id="productDescription" name="Description" class="form-control" rows="3">@Model?.Description</textarea>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel">Отмена</button>
+                <button type="submit" class="btn-save">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -2,7 +2,6 @@
 }
 
 .product-card {
-    border-radius: 16px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
@@ -59,4 +58,23 @@
     margin-bottom: 15px;
     flex: 1;
     text-align: right;
+}
+.product-edit {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .product-edit button {
+        border-radius: 10px;
+        border: none;
+        color: white;
+        padding: 7px;
+    }
+
+.btn-editing{
+    background-color: deepskyblue;
+}
+
+.btn-delete {
+    background-color: red;
 }

@@ -64,15 +64,5 @@ namespace AdminPanel.Pages
                 return Partial("_Notification", notification);
             }
         }
-        public IActionResult OnPostGetNotification(string message, string type)
-        {
-            var notification = new NotificationViewModel
-            {
-                Message = message,
-                Type = type
-            };
-            return Partial("_Notification", notification);
-        }
     }
-
 }

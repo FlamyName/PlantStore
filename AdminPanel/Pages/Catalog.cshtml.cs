@@ -52,6 +52,21 @@ namespace PlantStore.Pages
             return RedirectToPage(new { search = searchTerm, page });
         }
 
+        public async Task<IActionResult> OnGetEditModal(int id)
+        {
+            var result = await _mediator.Send(new GetProductIdQuery
+            {
+                Id = id
+            });
+
+            if (result == null)
+            {
+                NotFound();
+            }
+
+            return Partial("_EditProductModal", result);
+        }
+
         public async Task LoadItemsAsync()
         {
             try

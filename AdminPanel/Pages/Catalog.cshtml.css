@@ -23,6 +23,7 @@
 }
 
 .product-search {
+    margin-top: 1rem;
     margin-bottom: 1rem;
     width: 100%;
 }
@@ -154,9 +155,9 @@
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 400px) {
     .products-grid {
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        grid-template-columns: repeat(1, minmax(130px, 1fr));
         gap: 8px;
     }
 
@@ -165,6 +166,10 @@
     }
 
     .product-title {
+        font-size: 1rem;
+    }
+
+    .product-edit button {
         font-size: 1rem;
     }
 }
@@ -363,3 +368,5 @@
 .loading-spinner.loading-long span {
     animation: pulse 1.5s ease infinite;
 }
+
+

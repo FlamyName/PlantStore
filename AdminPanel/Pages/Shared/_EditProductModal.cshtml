@@ -1,4 +1,5 @@
 ﻿@using PlantStore.ViewModels
+@using AdminPanel.ViewModels
 @model ProductIdViewModel
 
 <div id="editProductModal" class="modal" style="display: none;">
@@ -8,7 +9,7 @@
             <span class="close-btn">&times;</span>
         </div>
 
-        <form id="editProductForm" method="post">
+        <form id="editProductForm" method="post" enctype="multipart/form-data">
             <input type="hidden" id="productId" name="Id" value="@Model?.Id" />
 
             <div class="form-group">
@@ -18,21 +19,20 @@
 
             <div class="form-group">
                 <label for="productImage">Картинки</label>
-                <div class="mini-images">
-                    @foreach(var images in Model!.Images)
+                <div class="image-slots-grid">
+                    @for(int i = 0; i < 5; i++)
                     {
-                        <img src="@images.Url">
-                        <img />
-                    }
-                    @foreach (var images in Model!.Images)
-                    {
-                        <img src="@images.Url">
-                        <img />
-                    }
-                    @foreach (var images in Model!.Images)
-                    {
-                        <img src="@images.Url">
-                        <img />
+                        var img = Model.Images.ElementAtOrDefault(i);
+                        var url = img?.Url ?? "";
+                        var index = i + 1;
+
+                        // ✅ Используем Partial View для слота
+                        @await Html.PartialAsync("_ImageSlot", new ImageSlotViewModel
+                        {
+                            Index = index,
+                            Url = url,
+                            IsMain = index == 1
+                        })
                     }
                 </div>
             </div>

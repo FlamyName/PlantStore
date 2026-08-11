@@ -1,0 +1,56 @@
+﻿@model AdminPanel.ViewModels.ImageSlotViewModel
+
+<div class="image-slot" data-index="@Model.Index" data-url="@Model.Url">
+    <!-- Скрытые поля -->
+    <input type="hidden" name="CurrentImage@(Model.Index)" value="@Model.Url" />
+    <input type="hidden" name="TempImage@(Model.Index)" value="@Model.TempUrl" />
+
+    <!-- Содержимое слота -->
+    <div class="slot-content">
+        @if (!string.IsNullOrEmpty(Model.Error))
+        {
+            <div class="slot-error">
+                <span class="text-danger">⚠️ @Model.Error</span>
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(Model.TempUrl))
+        {
+            <!-- Временное изображение (только что загружено) -->
+            <div class="image-slot-wrapper">
+                <img src="@Model.TempUrl" alt="Изображение" class="slot-image"
+                     onerror="this.src='/images/placeholder.jpg'" />
+            </div>
+            <button type="button" class="delete-image-btn" title="Удалить изображение">×</button>
+            <span class="slot-label badge bg-warning text-dark">⏳ Временное</span>
+        }
+        else if (!string.IsNullOrEmpty(Model.Url))
+        {
+            <!-- Постоянное изображение -->
+            <div class="image-slot-wrapper">
+                <img src="@Model.Url" alt="Изображение" class="slot-image"
+                     onerror="this.src='/images/placeholder.jpg'" />
+            </div>
+            <button type="button" class="delete-image-btn" title="Удалить изображение">×</button>
+            <span class="slot-label">@(Model.IsMain ? "★ Главное" : "#" + Model.Index)</span>
+        }
+        else
+        {
+            <!-- Пустой слот -->
+            <div class="empty-slot">
+                <span class="plus-icon">+</span>
+                <span class="add-text">Добавить</span>
+            </div>
+        }
+    </div>
+
+    <!-- ✅ Кнопка удаления - видна ТОЛЬКО если есть изображение -->
+    @if (!string.IsNullOrEmpty(Model.Url) || !string.IsNullOrEmpty(Model.TempUrl))
+    {
+        <button type="button" class="delete-image-btn" title="Удалить изображение">×</button>
+    }
+
+    <!-- Скрытый input для выбора файла -->
+    <input type="file" class="image-file-input" accept="image/*"
+           name="Image@(Model.Index)" data-index="@Model.Index"
+           style="display: none;" />
+</div>

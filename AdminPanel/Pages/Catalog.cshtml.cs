@@ -1,3 +1,8 @@
+using AdminPanel.ViewModels;
+using BusinessLogic.Core.Features.Commands;
+using BusinessLogic.Core.Notification;
+using BusinessLogic.Core.Notification.Extensions;
+using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -5,8 +10,9 @@ using PlantStore.Core.Features.Queries;
 using PlantStore.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace PlantStore.Pages
+namespace AdminPanel.Pages
 {
     public class CatalogModel : PageModel
     {
@@ -65,6 +71,153 @@ namespace PlantStore.Pages
             }
 
             return Partial("_EditProductModal", result);
+        }
+
+
+
+        public async Task<IActionResult> OnPostUploadTempImage(IFormFile file, int index)
+        {
+            try
+            {
+                // 1. Проверка файла
+                if (file == null || file.Length == 0)
+                {
+                    return Partial("_ImageSlot", new ImageSlotViewModel
+                    {
+                        Index = index,
+                        Error = "Файл не выбран"
+                    });
+                }
+
+                // 2. Валидация файла (используем ваш существующий код)
+                if (file.Length > 5 * 1024 * 1024)
+                {
+                    return Partial("_ImageSlot", new ImageSlotViewModel
+                    {
+                        Index = index,
+                        Error = "Файл слишком большой (макс 5 МБ)"
+                    });
+                }
+
+                // 3. Проверка типа файла
+                var allowedTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/webp" };
+                if (!allowedTypes.Contains(file.ContentType.ToLowerInvariant()))
+                {
+                    return Partial("_ImageSlot", new ImageSlotViewModel
+                    {
+                        Index = index,
+                        Error = "Недопустимый формат изображения"
+                    });
+                }
+
+                // 4. Сохраняем файл
+                var command = new UploadTempImageCommand { File = file };
+                var result = await _mediator.Send(command);
+
+                if (!result.Success)
+                {
+                    return Partial("_ImageSlot", new ImageSlotViewModel
+                    {
+                        Index = index,
+                        Error = result.ErrorMessage ?? "Ошибка загрузки"
+                    });
+                }
+
+                // 5. Сохраняем URL в TempData для возможного использования
+                TempData["UploadedImageUrl"] = result.Url;
+
+                // 6. Возвращаем обновленный слот с временным URL
+                return Partial("_ImageSlot", new ImageSlotViewModel
+                {
+                    Index = index,
+                    TempUrl = result.Url,
+                    IsMain = index == 1
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Ошибка валидации при загрузке изображения");
+                return Partial("_ImageSlot", new ImageSlotViewModel
+                {
+                    Index = index,
+                    Error = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при загрузке временного файла");
+                return Partial("_ImageSlot", new ImageSlotViewModel
+                {
+                    Index = index,
+                    Error = "Произошла ошибка при загрузке изображения"
+                });
+            }
+        }
+
+        //  НОВЫЙ МЕТОД: Удаление изображения из слота
+        public IActionResult OnPostRemoveImage(int index)
+        {
+            return Partial("_ImageSlot", new ImageSlotViewModel
+            {
+                Index = index,
+                Url = null,
+                TempUrl = null,
+                IsMain = index == 1
+            });
+        }
+
+
+        public async Task<IActionResult> OnPostUpdateProductWithFiles(UpdateProductWithFilesRequest request)
+        {
+            try
+            {
+                var command = new UpdateProductFilesCommand
+                {
+                    Id = request.Id,
+                    Name = request.Name,
+                    Description = request.Description,
+                    Price = request.Price,
+                    CurrentImage1 = request.CurrentImage1,
+                    CurrentImage2 = request.CurrentImage2,
+                    CurrentImage3 = request.CurrentImage3,
+                    CurrentImage4 = request.CurrentImage4,
+                    CurrentImage5 = request.CurrentImage5,
+                    TempImage1 = request.TempImage1,
+                    TempImage2 = request.TempImage2,
+                    TempImage3 = request.TempImage3,
+                    TempImage4 = request.TempImage4,
+                    TempImage5 = request.TempImage5,
+                };
+
+                var result = await _mediator.Send(command);
+
+                if (result)
+                {
+                    return Partial("_Notification", new NotificationViewModel
+                    {
+                        Message = "Товар успешно обновлён!",
+                        Type = NotificationType.Success.ToNotificationType()
+                    });
+                }
+                else
+                {
+                    return Partial("_Notification", new NotificationViewModel
+                    {
+                        Message = "Товар не найден",
+                        Type = NotificationType.Error.ToNotificationType()
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при обновлении товара Id {Id}", request.Id);
+                return Partial("_Notification", new NotificationViewModel
+                {
+                    Message = "Ошибка при обновлении: " + ex.Message,
+                    Type = NotificationType.Error.ToNotificationType()
+                });
+            }
+
         }
 
         public async Task LoadItemsAsync()

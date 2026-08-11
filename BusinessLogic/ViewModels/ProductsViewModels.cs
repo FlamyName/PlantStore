@@ -9,5 +9,6 @@
         public string ProductName { get; set; }
         public int Price { get; set; }
         public string Url { get; set; }
+        public int CategoryId { get; set; }
     }
 }

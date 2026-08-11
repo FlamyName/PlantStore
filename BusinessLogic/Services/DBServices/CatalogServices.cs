@@ -108,6 +108,7 @@ namespace PlantStore.Services.DBServices
                 ProductName = product.ProductName,
                 Price = product.Price,
                 Description = product.Description,
+                CategoryId = product.CategoryId,
                 Images = product.Images.Select(x => new ProductImageViewModel
                 {
                     Id = x.Id,

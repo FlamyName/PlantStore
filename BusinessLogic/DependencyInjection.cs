@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using BusinessLogic.Services.DBServices.AdminService;
+using BusinessLogic.Services.DBServices.FileStorageService;
+using BusinessLogic.Services.DBServices.IDBServices;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +33,8 @@ namespace BusinessLogic
 
             services.AddScoped<ICatalogServices, CatalogServices>();
             services.AddScoped<INewsServices, NewsServices>();
+            services.AddScoped<IAdminCatalogService, AdminCatalogService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
 
             return services;
         }

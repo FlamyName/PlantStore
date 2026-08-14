@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Services.DBServices.AdminService;
+﻿using BusinessLogic.Services.BackgroundServices;
+using BusinessLogic.Services.DBServices.AdminService;
 using BusinessLogic.Services.DBServices.FileStorageService;
 using BusinessLogic.Services.DBServices.IDBServices;
 using MediatR;
@@ -35,6 +36,8 @@ namespace BusinessLogic
             services.AddScoped<INewsServices, NewsServices>();
             services.AddScoped<IAdminCatalogService, AdminCatalogService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
+
+            services.AddHostedService<TempFileCleanupService>();
 
             return services;
         }

@@ -35,6 +35,11 @@ namespace BusinessLogic.Services.DBServices.FileStorageService
             if (!allowedTypes.Contains(file.ContentType))
                 throw new InvalidOperationException("Недопустимый формат файла. Только изображения.");
 
+            if (!IsValidImageSignature(file))
+            {
+                throw new InvalidOperationException("Файл не является изображением");
+            }
+
             // Генерируем уникальное имя
             var fileName = $"{Guid.NewGuid():N}_{Path.GetFileName(file.FileName)}";
             var filePath = Path.Combine(_tempFolder, fileName);
@@ -148,6 +153,36 @@ namespace BusinessLogic.Services.DBServices.FileStorageService
             }
 
             return Task.CompletedTask;
+        }
+
+        private bool IsValidImageSignature(IFormFile file)
+        {
+            using var stream = file.OpenReadStream();
+            byte[] header = new byte[8];
+            stream.Read(header, 0, 8);
+            stream.Position = 0;
+
+            // JPEG
+            if (header[0] == 0xFF && header[1] == 0xD8 && header[2] == 0xFF)
+                return true;
+
+            // PNG
+            if (header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4E && header[3] == 0x47)
+                return true;
+
+            // GIF
+            if (header[0] == 0x47 && header[1] == 0x49 && header[2] == 0x46 && header[3] == 0x38)
+                return true;
+
+            // WebP
+            if (header[0] == 0x52 && header[1] == 0x49 && header[2] == 0x46 && header[3] == 0x46)
+                return true;
+
+            // BMP
+            if (header[0] == 0x42 && header[1] == 0x4D)
+                return true;
+
+            return false;
         }
 
     }

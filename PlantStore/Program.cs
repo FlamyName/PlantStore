@@ -1,4 +1,5 @@
 using BusinessLogic;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,19 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+var adminImagesPath = Path.Combine(
+    Directory.GetCurrentDirectory(),
+    "..", "AdminPanel", "wwwroot", "images"
+);
+if (Directory.Exists(adminImagesPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(adminImagesPath),
+        RequestPath = "/images"  //отдельный путь
+    });
+}
 
 app.UseRouting();
 

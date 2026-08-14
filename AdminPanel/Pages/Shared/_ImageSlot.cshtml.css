@@ -1,1 +1,270 @@
-﻿
+﻿﻿ /* ============================================================
+   СТИЛИ ДЛЯ КОМПОНЕНТА СЛОТА ИЗОБРАЖЕНИЯ (_ImageSlot)
+   ============================================================ */
+/* --- Контейнер сетки изображений (горизонтальный ряд) --- */
+.image-slots-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 4px 0;
+}
+
+/* --- Каждый слот (карточка изображения) --- */
+.image-slot {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    background-color: #f8f9fa;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+    .image-slot:hover {
+        border-color: #6c757d;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-slot.has-image {
+        border-style: solid;
+        border-color: #28a745;
+    }
+
+    .image-slot.empty {
+        border-style: dashed;
+        border-color: #ccc;
+    }
+
+/* --- Внутренний контейнер слота --- */
+.slot-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* --- Само изображение внутри слота --- */
+.slot-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Кнопка удаления - всегда видна, только если есть изображение --- */
+.delete-image-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(220, 53, 69, 0.9);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.2s, transform 0.1s;
+    z-index: 10;
+}
+
+    .delete-image-btn:hover {
+        background: rgba(200, 0, 0, 0.95);
+        transform: scale(1.1);
+    }
+
+    .delete-image-btn:active {
+        transform: scale(0.9);
+    }
+
+/* --- Подпись (главное / номер) --- */
+.slot-label {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+    line-height: 1.4;
+    z-index: 5;
+}
+
+/* --- Пустой слот --- */
+.empty-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    width: 100%;
+    height: 100%;
+    transition: background 0.2s;
+}
+
+    .empty-slot .plus-icon {
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .empty-slot .add-text {
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+.image-slot:hover .empty-slot {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* --- Ошибка в слоте --- */
+.slot-error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(220, 53, 69, 0.9);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    z-index: 15;
+    text-align: center;
+    max-width: 90%;
+}
+
+/* --- Badge для временного изображения --- */
+.badge-warning {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgba(255, 193, 7, 0.9);
+    color: #000;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Индикатор загрузки (через CSS класс) --- */
+.image-slot.loading .slot-content {
+    position: relative;
+}
+
+    .image-slot.loading .slot-content::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 20;
+        border-radius: 6px;
+    }
+
+    .image-slot.loading .slot-content::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30px;
+        height: 30px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 21;
+    }
+
+.image-slot.loading .slot-image,
+.image-slot.loading .empty-slot,
+.image-slot.loading .slot-label {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* --- Адаптив --- */
+@media (max-width: 576px) {
+    .image-slot {
+        width: 70px;
+        height: 70px;
+    }
+
+    .image-slots-grid {
+        gap: 8px;
+    }
+
+    .slot-label {
+        font-size: 8px;
+        padding: 1px 4px;
+    }
+
+    .delete-image-btn {
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        top: 2px;
+        right: 2px;
+    }
+
+    .empty-slot .plus-icon {
+        font-size: 24px;
+    }
+
+    .empty-slot .add-text {
+        font-size: 10px;
+        margin-top: 2px;
+    }
+}
+
+@media (max-width: 400px) {
+    .image-slot {
+        width: 60px;
+        height: 60px;
+    }
+
+    .image-slots-grid {
+        gap: 6px;
+    }
+
+    .slot-label {
+        font-size: 7px;
+        padding: 1px 3px;
+    }
+
+    .delete-image-btn {
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+    }
+}

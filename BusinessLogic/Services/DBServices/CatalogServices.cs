@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PlantStore.DB;
@@ -22,6 +23,17 @@ namespace PlantStore.Services.DBServices
             _context = context;
             _mapper = mapper;
             _logger = logger;
+        }
+
+        public async Task<List<CategoryViewModel>> GetAllCategoryAsync()
+        {
+            var category = await _context.Categories.ToListAsync();
+
+            var categoryView = _mapper.Map<List<CategoryViewModel>>(category);
+
+            _logger.LogInformation("Загружено {category.Count} категорий", category.Count);
+
+            return categoryView;
         }
 
         /// <summary>
@@ -55,6 +67,16 @@ namespace PlantStore.Services.DBServices
             };
         }
 
+
+
+        ///<summary>
+        ///Получение списка элементов из таблицы Products по категории с пагинацией
+        /// </summary> 
+        //public async Task<PagedResult<ProductsViewModels>> GetProductsByCategoryAsync(int page, int pageSize)
+        //{
+
+        //}
+
         /// <summary>
         /// Получение списка элементов из таблицы Products по заданному значению name с пагинацией
         /// </summary>
@@ -70,6 +92,7 @@ namespace PlantStore.Services.DBServices
                 .OrderBy (x => x.Id)
                 .Reverse()
                 .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .AsSplitQuery()
                 .ToListAsync();
 

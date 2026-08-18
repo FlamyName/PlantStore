@@ -1,4 +1,5 @@
-﻿using PlantStore.ViewModels;
+﻿using BusinessLogic.ViewModels;
+using PlantStore.ViewModels;
 
 namespace PlantStore.Services.DBServices.IDBServices
 {
@@ -21,5 +22,7 @@ namespace PlantStore.Services.DBServices.IDBServices
         /// Реализует метод получения всех элементов опредленного продукта по значению id
         /// </summary>
         Task<ProductIdViewModel?> GetProductByIdAsync(int id);
+
+        Task<List<CategoryViewModel>> GetAllCategoryAsync();
     }
 }

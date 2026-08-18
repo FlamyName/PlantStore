@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLogic.ViewModels;
 using PlantStore.DB.Models;
 using PlantStore.ViewModels;
 
@@ -22,6 +23,7 @@ namespace PlantStore.Services.AutoMapper
             /// Преобразования данных из News в ViewModel
             /// </summary>
             CreateMap<News, NewsViewModel>();
+            CreateMap<Category, CategoryViewModel>();
         }
     }
 }

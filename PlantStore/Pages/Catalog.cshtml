@@ -4,6 +4,33 @@
     ViewData["Title"] = "Каталог";
 }
 <main class="product-main">
+    <nav class="category-nav">
+        <ul class="category-nav-list">
+            <!-- Кнопка "Все товары" -->
+            <li class="category-nav-item">
+                <a class="category-nav-link @(string.IsNullOrEmpty(Model.Category) ? "active" : "")"
+                   asp-route-category="">
+                    Все товары
+                </a>
+            </li>
+
+            <!-- Категории -->
+            @if (Model.Categories != null)
+            {
+                @foreach (var category in Model.Categories)
+                {
+                    <li class="category-nav-item">
+                        <a class="category-nav-link @(Model.Category == category.NameCategory.ToLowerInvariant() ? "active" : "")"
+                           asp-route-category="@category.NameCategory">
+                            @category.NameCategory
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+
+
     <div class="product-search">
         <div class="search-container">
             <form method="get">
@@ -39,7 +66,7 @@
                         id="loadMoreBtn"
                         data-page="2"
                         data-search="@Model.Search">
-                    Загрузить ещё
+                        Загрузить ещё
                 </button>
                 <div class="loading-spinner" id="loadingSpinner" style="display: none;">
                     <div class="spinner"></div>

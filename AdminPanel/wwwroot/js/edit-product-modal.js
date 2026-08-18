@@ -111,6 +111,7 @@
     // ============================================================
 
     function setSaveButtonState(disabled) {
+        if (!currentModal) return;
         var $saveBtn = currentModal.find('.btn-save');
         if (disabled) {
             $saveBtn.prop('disabled', true);
@@ -134,7 +135,9 @@
     function resetFormState() {
         isFormDirty = false;
         isUploading = false;
-        setSaveButtonState(true);
+        if (currentModal) {
+            setSaveButtonState(true);
+        }
     }
 
     // ============================================================
@@ -291,6 +294,10 @@
         // --- ОТПРАВКА ФОРМЫ ---
         currentModal.off('submit', '#editProductForm').on('submit', '#editProductForm', function (e) {
             e.preventDefault();
+            if (isUploading) {
+                window.showMessage && window.showMessage('Подождите, изображение ещё загружается...', 'warning');
+                return; // ❌ Не отправляем форму
+            }
             var $form = $(this);
             var $saveBtn = $form.find('.btn-save');
             var formData = new FormData($form[0]);
@@ -364,11 +371,11 @@
 
     function closeModal() {
         if (currentModal) {
+            resetFormState();
             currentModal.hide();
             currentModal.remove();
             currentModal = null;
         }
-        resetFormState();
     }
 
     // ============================================================

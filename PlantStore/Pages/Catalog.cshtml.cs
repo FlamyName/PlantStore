@@ -1,3 +1,7 @@
+using BusinessLogic.Core.Features.Queries;
+using BusinessLogic.Core.Notification;
+using BusinessLogic.Core.Notification.Extensions;
+using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,13 +19,17 @@ namespace PlantStore.Pages
         private const int PageSize = 20;
 
         public IEnumerable<ProductsViewModels>? Products { get; set; }
+        public IEnumerable<CategoryViewModel>? Categories { get; set; }
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; } = 1;
 
         [FromQuery]
-        [Required]
         [StringLength(50, ErrorMessage = "Поисковый запрос должен содержать максимум 50 символов")]
         public string? Search {  get; set; }
+
+        [FromQuery]
+        [StringLength(20, ErrorMessage = "Поисковый запрос должен содержать максимум 20 символов")]
+        public string? Category { get; set; }
         public bool HasMorePage => TotalItems > CurrentPage * PageSize;
 
         public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger)
@@ -32,8 +40,14 @@ namespace PlantStore.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             CurrentPage = 1;
             await LoadItemsAsync();
+            await LoadCategoriesAsync();
             return Page();
             
         }
@@ -56,21 +70,36 @@ namespace PlantStore.Pages
         {
             try
             {
-                var result = await _mediator.Send(new GetProductsQuery
+                var products = await _mediator.Send(new GetProductsQuery
                 {
                     SearchTerm = Search,
                     PageSize = PageSize,
                     Page = CurrentPage,
                 });
 
-                Products = result.Items.ToList();
-                TotalItems = result.TotalCount;
+                Products = products.Items.ToList();
+                TotalItems = products.TotalCount;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при загрузке товаров");
                 Products = new List<ProductsViewModels>();
                 TotalItems = 0;
+            }
+        }
+
+        public async Task LoadCategoriesAsync()
+        {
+            try
+            {
+                var categories = await _mediator.Send(new GetCategoryQuery { });
+
+                Categories = categories.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при загрузке Категорий");
+                Categories = new List<CategoryViewModel>();
             }
         }
     }

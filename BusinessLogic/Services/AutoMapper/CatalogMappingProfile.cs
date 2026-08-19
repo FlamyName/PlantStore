@@ -17,7 +17,10 @@ namespace PlantStore.Services.AutoMapper
             /// </summary>
             CreateMap<Products, ProductsViewModels>()
                 .ForMember(x => x.Url,
-                    y => y.MapFrom(a => a.Images.FirstOrDefault(i => i.IsMain)!.Url));
+                    y => y.MapFrom(a => a.Images.FirstOrDefault(i => i.IsMain)!.Url))
+                .ForMember(x => x.NameCategory,
+                    y => y.MapFrom(a => a.Category.NameCategory));
+
 
             /// <summary>
             /// Преобразования данных из News в ViewModel

@@ -52,9 +52,10 @@ namespace PlantStore.Pages
             
         }
 
-        public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] int page = 2)
+        public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] string? category, [FromQuery] int page = 2)
         {
             Search = searchTerm;
+            Category = category;
             CurrentPage = page;
             await LoadItemsAsync();
 
@@ -63,7 +64,7 @@ namespace PlantStore.Pages
                 return Partial("_ProductItem", Products);
             }
 
-            return RedirectToPage(new { search = searchTerm, page });
+            return RedirectToPage(new { search = searchTerm, category, page });
         }
 
         public async Task LoadItemsAsync()
@@ -73,6 +74,7 @@ namespace PlantStore.Pages
                 var products = await _mediator.Send(new GetProductsQuery
                 {
                     SearchTerm = Search,
+                    Category = Category,
                     PageSize = PageSize,
                     Page = CurrentPage,
                 });

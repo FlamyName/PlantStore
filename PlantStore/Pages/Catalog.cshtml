@@ -34,6 +34,7 @@
     <div class="product-search">
         <div class="search-container">
             <form method="get">
+                <input type="hidden" name="category" value="@Model.Category" />
                 <input type="text"
                        name="search"
                        value="@Model.Search"
@@ -65,7 +66,8 @@
                 <button class="load-more-button"
                         id="loadMoreBtn"
                         data-page="2"
-                        data-search="@Model.Search">
+                        data-search="@Model.Search"
+                        data-category="@Model.Category">
                         Загрузить ещё
                 </button>
                 <div class="loading-spinner" id="loadingSpinner" style="display: none;">

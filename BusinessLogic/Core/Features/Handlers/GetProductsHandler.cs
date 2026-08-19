@@ -29,7 +29,7 @@ namespace PlantStore.Core.Features.Handlers
             {
                 if (string.IsNullOrEmpty(request.SearchTerm))
                 {
-                    return await _catalogServices.GetAllProductAsync(request.Page, request.PageSize);
+                    return await _catalogServices.GetAllProductAsync(request.Page, request.PageSize, request.Category);
                 }
                 else if (request.SearchTerm.Length > 50)
                 {
@@ -41,7 +41,7 @@ namespace PlantStore.Core.Features.Handlers
                 }
                 else
                 {
-                    return await _catalogServices.GetProductNameAsync(request.SearchTerm, request.Page, request.PageSize);
+                    return await _catalogServices.GetProductNameAsync(request.SearchTerm, request.Page, request.PageSize, request.Category);
                 }
 
             }

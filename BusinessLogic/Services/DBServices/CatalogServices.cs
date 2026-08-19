@@ -39,12 +39,19 @@ namespace PlantStore.Services.DBServices
         /// <summary>
         /// Получение всего списка элементов из таблицы Products с пагинацией
         /// </summary>
-        public async Task<PagedResult<ProductsViewModels>> GetAllProductAsync(int page, int pageSize)
+        public async Task<PagedResult<ProductsViewModels>> GetAllProductAsync(int page, int pageSize, string? category)
         {
-          
-            var totalCount = await _context.Products.CountAsync();
+            var query = _context.Products.AsNoTracking();
 
-            var product = await _context.Products
+            // Фильтр по категории (если указана)
+            if (!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(p => p.Category.NameCategory == category);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var product = await query
                 .AsNoTracking()
                 .Include(x => x.Images.Where(x => x.IsMain))
                 .OrderBy(x => x.Id)
@@ -80,12 +87,19 @@ namespace PlantStore.Services.DBServices
         /// <summary>
         /// Получение списка элементов из таблицы Products по заданному значению name с пагинацией
         /// </summary>
-        public async Task<PagedResult<ProductsViewModels>> GetProductNameAsync(string name,int page, int pageSize)
+        public async Task<PagedResult<ProductsViewModels>> GetProductNameAsync(string name,int page, int pageSize, string? category)
         {
-            var totalCount = await _context.Products.CountAsync(
-                x => x.ProductName.ToLower().Contains(name));
+            var query = _context.Products
+                .Where(x => x.ProductName.ToLower().Contains(name));
 
-            var product = await _context.Products
+            if (!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(p => p.Category.NameCategory == category);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var product = await query
                 .AsNoTracking()
                 .Where(x => x.ProductName.ToLower().Contains(name))
                 .Include(x => x.Images.Where(x => x.IsMain))

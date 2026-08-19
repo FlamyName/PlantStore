@@ -58,6 +58,7 @@
 
         const page = loadMoreBtn.dataset.page;
         const search = searchAttr ? (loadMoreBtn.dataset.search || '') : '';
+        const category = loadMoreBtn.dataset.category || '';
 
         setLoading(true);
 
@@ -66,6 +67,7 @@
             url.searchParams.append('handler', 'LoadMore');
             url.searchParams.append('page', page);
             if (search) url.searchParams.append('searchTerm', search);
+            if (category) url.searchParams.append('category', category);
             url.searchParams.append('_', Date.now());
 
             const response = await fetch(url, {

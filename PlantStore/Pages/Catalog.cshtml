@@ -4,12 +4,27 @@
     ViewData["Title"] = "Каталог";
 }
 <main class="product-main">
+    <form method="get" id="filterForm">
+        <input type="hidden" name="search" value="@Model.Search" />
+        <input type="hidden" name="category" value="@Model.Category" />
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" name="hideOutOfStock" value="true"
+                       @(Model.HideOutOfStock ? "checked" : "")
+                       onchange="document.getElementById('filterForm').submit()">
+                <span class="slider round"></span>
+            </label>
+            <span class="toggle-label">Скрыть товары с нулевым остатком</span>
+        </div>
+    </form>
     <nav class="category-nav">
         <ul class="category-nav-list">
             <!-- Кнопка "Все товары" -->
             <li class="category-nav-item">
                 <a class="category-nav-link @(string.IsNullOrEmpty(Model.Category) ? "active" : "")"
-                   asp-route-category="">
+                   asp-route-category=""
+                   asp-route-search="@Model.Search"
+                   asp-route-hideOutOfStock="@Model.HideOutOfStock">
                     Все товары
                 </a>
             </li>
@@ -21,7 +36,9 @@
                 {
                     <li class="category-nav-item">
                         <a class="category-nav-link @(Model.Category == category.NameCategory.ToLowerInvariant() ? "active" : "")"
-                           asp-route-category="@category.NameCategory">
+                           asp-route-category="@category.NameCategory"
+                           asp-route-search="@Model.Search"
+                           asp-route-hideOutOfStock="@Model.HideOutOfStock">
                             @category.NameCategory
                         </a>
                     </li>
@@ -35,6 +52,7 @@
         <div class="search-container">
             <form method="get">
                 <input type="hidden" name="category" value="@Model.Category" />
+                <input type="hidden" name="hideOutOfStock" value="@(Model.HideOutOfStock ? "true" : "false")" />
                 <input type="text"
                        name="search"
                        value="@Model.Search"
@@ -67,7 +85,8 @@
                         id="loadMoreBtn"
                         data-page="2"
                         data-search="@Model.Search"
-                        data-category="@Model.Category">
+                        data-category="@Model.Category"
+                        data-hide-out-of-stock="@Model.HideOutOfStock.ToString().ToLower()">
                         Загрузить ещё
                 </button>
                 <div class="loading-spinner" id="loadingSpinner" style="display: none;">
@@ -84,4 +103,5 @@
 
 @section Scripts {
     <script src="~/js/PageScript.js?v=@DateTime.Now.Ticks"></script>
+
 }

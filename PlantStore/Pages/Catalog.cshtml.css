@@ -367,3 +367,89 @@
 .loading-spinner.loading-long span {
     animation: pulse 1.5s ease infinite;
 }
+
+
+
+/* Контейнер для переключателя */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+/* Скрываем стандартный чекбокс */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+/* Слайдер (ползунок) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+/* Когда чекбокс отмечен */
+.switch input:checked + .slider {
+    background-color: #28a745;
+}
+
+    .switch input:checked + .slider:before {
+        transform: translateX(22px);
+    }
+
+/* Подпись */
+.toggle-label {
+    font-size: 1rem;
+    color: #e0e0e0;
+    user-select: none;
+}
+
+/* Адаптив */
+@media (max-width: 576px) {
+    .switch {
+        width: 40px;
+        height: 24px;
+    }
+
+    .slider:before {
+        height: 16px;
+        width: 16px;
+        left: 3px;
+        bottom: 3px;
+    }
+
+    .switch input:checked + .slider:before {
+        transform: translateX(18px);
+    }
+}

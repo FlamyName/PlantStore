@@ -19,7 +19,9 @@ namespace PlantStore.Services.AutoMapper
                 .ForMember(x => x.Url,
                     y => y.MapFrom(a => a.Images.FirstOrDefault(i => i.IsMain)!.Url))
                 .ForMember(x => x.NameCategory,
-                    y => y.MapFrom(a => a.Category.NameCategory));
+                    y => y.MapFrom(a => a.Category.NameCategory))
+                .ForMember(x => x.UnitName,
+                    y => y.MapFrom(a => a.Units!.NameUnit));
 
 
             /// <summary>

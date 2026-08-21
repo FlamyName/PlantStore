@@ -7,6 +7,7 @@
 {
     <a asp-page="/Plant"
        asp-route-id="@products.Id"
+       data-zero="@(products.Count <= 0 ? "true" : "false")"
        class="product-card-link"
        target="_blank"
        rel="noopener noreferrer">
@@ -18,8 +19,19 @@
                      onerror="this.src='/images/placeholder.jpg'">
             </div>
             <div class="product-info">
-                <p class="product-description">@products.Price ₽</p>
+                <p class="product-description">@products.Price ₽ / @products.UnitName</p>
                 <h3 class="product-title">@products.ProductName</h3>
+                <div class="count-block">
+                    @if(products.Count <= 0)
+                    {
+                        <p class="count-product-zero">Нет в наличии</p>
+                    }
+                    else
+                    {
+                        <p class="count-name-product">Кол-во:</p>
+                        <p class="count-product">@products.Count</p>
+                    }
+                </div>
             </div>
         </div>
     </a>

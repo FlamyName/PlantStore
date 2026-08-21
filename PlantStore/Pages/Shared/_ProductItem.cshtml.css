@@ -62,3 +62,27 @@
     line-height: 1.6;
 }
 
+.count-block {
+    display: flex;
+    justify-content: center; /* центрируем содержимое по горизонтали */
+    align-items: center;
+    gap: 8px; /* отступ между "Кол-во" и числом */
+    margin-top: auto; /* прибивает блок к низу карточки */
+    color: #28a745; /* зелёный цвет текста (можно #2E7D32 или #4CAF50) */
+    font-weight: 500;
+    padding-top: 8px;
+}
+
+.count-name-product {
+    font-size: 0.9rem;
+}
+
+.count-product {
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: #28a745; /* ярко-зелёный для самого числа */
+}
+.count-product-zero {
+    color: red;
+    font-size: 1.0rem;
+}

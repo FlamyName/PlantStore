@@ -59,6 +59,7 @@
         const page = loadMoreBtn.dataset.page;
         const search = searchAttr ? (loadMoreBtn.dataset.search || '') : '';
         const category = loadMoreBtn.dataset.category || '';
+        const hideOutOfStock = loadMoreBtn.dataset.hideOutOfStock || 'false';
 
         setLoading(true);
 
@@ -68,6 +69,7 @@
             url.searchParams.append('page', page);
             if (search) url.searchParams.append('searchTerm', search);
             if (category) url.searchParams.append('category', category);
+            if (hideOutOfStock) url.searchParams.append('hideOutOfStock', hideOutOfStock);
             url.searchParams.append('_', Date.now());
 
             const response = await fetch(url, {

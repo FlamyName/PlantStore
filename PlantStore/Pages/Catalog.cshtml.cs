@@ -30,6 +30,8 @@ namespace PlantStore.Pages
         [FromQuery]
         [StringLength(20, ErrorMessage = "Поисковый запрос должен содержать максимум 20 символов")]
         public string? Category { get; set; }
+        [FromQuery]
+        public bool HideOutOfStock { get; set; } = false;
         public bool HasMorePage => TotalItems > CurrentPage * PageSize;
 
         public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger)
@@ -52,11 +54,12 @@ namespace PlantStore.Pages
             
         }
 
-        public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] string? category, [FromQuery] int page = 2)
+        public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] string? category, [FromQuery] bool hideOutOfStock, [FromQuery] int page = 2)
         {
             Search = searchTerm;
             Category = category;
             CurrentPage = page;
+            HideOutOfStock = hideOutOfStock;
             await LoadItemsAsync();
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
@@ -64,7 +67,7 @@ namespace PlantStore.Pages
                 return Partial("_ProductItem", Products);
             }
 
-            return RedirectToPage(new { search = searchTerm, category, page });
+            return RedirectToPage(new { search = searchTerm, category, hideOutOfStock, page });
         }
 
         public async Task LoadItemsAsync()
@@ -77,6 +80,7 @@ namespace PlantStore.Pages
                     Category = Category,
                     PageSize = PageSize,
                     Page = CurrentPage,
+                    HideOutOfStock = HideOutOfStock
                 });
 
                 Products = products.Items.ToList();

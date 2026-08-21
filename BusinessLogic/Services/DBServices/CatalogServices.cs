@@ -41,7 +41,7 @@ namespace PlantStore.Services.DBServices
         /// <summary>
         /// Получение всего списка элементов из таблицы Products с пагинацией
         /// </summary>
-        public async Task<PagedResult<ProductsViewModels>> GetAllProductAsync(int page, int pageSize, string? category)
+        public async Task<PagedResult<ProductsViewModels>> GetAllProductAsync(int page, int pageSize, string? category, bool hideOutOfStock)
         {
             var query = _context.Products.AsNoTracking();
 
@@ -49,6 +49,11 @@ namespace PlantStore.Services.DBServices
             if (!string.IsNullOrEmpty(category))
             {
                 query = query.Where(p => p.Category.NameCategory == category);
+            }
+
+            if (hideOutOfStock)
+            {
+                query = query.Where(p => p.Count > 0); // 👈 Фильтр
             }
 
             var pagedResult = await query
@@ -81,7 +86,7 @@ namespace PlantStore.Services.DBServices
         /// <summary>
         /// Получение списка элементов из таблицы Products по заданному значению name с пагинацией
         /// </summary>
-        public async Task<PagedResult<ProductsViewModels>> GetProductNameAsync(string name,int page, int pageSize, string? category)
+        public async Task<PagedResult<ProductsViewModels>> GetProductNameAsync(string name,int page, int pageSize, string? category, bool hideOutOfStock)
         {
             var query = _context.Products
                 .AsNoTracking()
@@ -90,6 +95,11 @@ namespace PlantStore.Services.DBServices
             if (!string.IsNullOrEmpty(category))
             {
                 query = query.Where(p => p.Category.NameCategory == category);
+            }
+
+            if (hideOutOfStock)
+            {
+                query = query.Where(p => p.Count > 0); // 👈 Фильтр
             }
 
             var pagedResult = await query

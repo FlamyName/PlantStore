@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BusinessLogic.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PlantStore.DB;
+using PlantStore.DB.Models;
 using PlantStore.Services.DBServices.IDBServices;
 using PlantStore.ViewModels;
 
@@ -27,27 +29,21 @@ namespace PlantStore.Services.DBServices
         /// </summary>
         public async Task<PagedResult<NewsViewModel>> GetAllNews(int page, int pageSize)
         {
-            var totalCount = await _context.News.CountAsync();
+            var query = _context.News.AsNoTracking();
 
-            var news = await _context.News
+            var pagedResult = await query
                 .AsNoTracking()
                 .OrderBy(x => x.DateNews)
                 .Reverse()
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+                .ToPagedResultAsync<News, NewsViewModel>(page, pageSize, _mapper);
 
-            var newsView = _mapper.Map<List<NewsViewModel>>(news);
+            _logger.LogInformation(
+                "Загружено {pagedResult.Items.Count()} новостей из {pagedResult.TotalCount} (страница {pagedResult.CurrentPage})", 
+                pagedResult.Items.Count(), 
+                pagedResult.TotalCount, 
+                pagedResult.CurrentPage);
 
-            _logger.LogInformation("Загружено {news.Count} новостей из {totalCount} (страница {page})", news.Count, totalCount, page);
-
-            return new PagedResult<NewsViewModel>()
-            {
-                Items = newsView,
-                TotalCount = totalCount,
-                PageSize = pageSize,
-                CurrentPage = page,
-            };
+            return pagedResult;
         }
     }
 }

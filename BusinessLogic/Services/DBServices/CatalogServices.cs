@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using BusinessLogic.Extensions;
 using BusinessLogic.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PlantStore.DB;
+using PlantStore.DB.Models;
 using PlantStore.Services.DBServices.IDBServices;
 using PlantStore.ViewModels;
 using System.Runtime.InteropServices;
@@ -49,29 +51,21 @@ namespace PlantStore.Services.DBServices
                 query = query.Where(p => p.Category.NameCategory == category);
             }
 
-            var totalCount = await query.CountAsync();
-
-            var product = await query
+            var pagedResult = await query
                 .AsNoTracking()
-                .Include(x => x.Images.Where(x => x.IsMain))
                 .OrderBy(x => x.Id)
                 .Reverse()
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .AsSplitQuery()
-                .ToListAsync();
+                .ToPagedResultAsync<Products, ProductsViewModels>(page, pageSize, _mapper);
 
-            var clothView = _mapper.Map<List<ProductsViewModels>>(product);
 
-            _logger.LogInformation(" Загружено {cloth.Count} товаров из {totalCount} (страница {page})", product.Count, totalCount, page);
+            _logger.LogInformation(
+                "Загружено {pagedResult.Items.Count} товаров из {pagedResult.TotalCount} (страница {page}), (категория - {category})",
+                pagedResult.Items.Count(),
+                pagedResult.TotalCount,
+                pagedResult.CurrentPage,
+                category);
 
-            return new PagedResult<ProductsViewModels>
-            {
-                Items = clothView,
-                TotalCount = totalCount,
-                PageSize = pageSize,
-                CurrentPage = page,
-            };
+            return pagedResult;
         }
 
 
@@ -90,6 +84,7 @@ namespace PlantStore.Services.DBServices
         public async Task<PagedResult<ProductsViewModels>> GetProductNameAsync(string name,int page, int pageSize, string? category)
         {
             var query = _context.Products
+                .AsNoTracking()
                 .Where(x => x.ProductName.ToLower().Contains(name));
 
             if (!string.IsNullOrEmpty(category))
@@ -97,30 +92,20 @@ namespace PlantStore.Services.DBServices
                 query = query.Where(p => p.Category.NameCategory == category);
             }
 
-            var totalCount = await query.CountAsync();
-
-            var product = await query
+            var pagedResult = await query
                 .AsNoTracking()
-                .Where(x => x.ProductName.ToLower().Contains(name))
-                .Include(x => x.Images.Where(x => x.IsMain))
-                .OrderBy (x => x.Id)
+                .OrderBy(x => x.Id)
                 .Reverse()
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .AsSplitQuery()
-                .ToListAsync();
+                .ToPagedResultAsync<Products, ProductsViewModels>(page, pageSize, _mapper);
 
-            var productView = _mapper.Map<List<ProductsViewModels>>(product);
+            _logger.LogInformation(
+                "Загружено {pagedResult.Items.Count} товаров из {pagedResult.TotalCount} (страница {page}), (категория - {category})",
+                pagedResult.Items.Count(),
+                pagedResult.TotalCount,
+                pagedResult.CurrentPage,
+                category);
 
-            _logger.LogInformation("Поиск {name}: Загружено {cloth.Count} товаров из {totalCount} (страница {page})", name, product.Count, totalCount, page);
-
-            return new PagedResult<ProductsViewModels>
-            {
-                Items = productView,
-                TotalCount = totalCount,
-                PageSize = pageSize,
-                CurrentPage = page,
-            };
+            return pagedResult;
         }
 
         /// <summary>

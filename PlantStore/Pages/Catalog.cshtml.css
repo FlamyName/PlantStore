@@ -368,12 +368,11 @@
     animation: pulse 1.5s ease infinite;
 }
 
-
-
 /* Контейнер для переключателя */
 .toggle-container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
     margin-bottom: 20px;
     padding: 10px 0;
@@ -446,10 +445,58 @@
         height: 16px;
         width: 16px;
         left: 3px;
-        bottom: 3px;
     }
 
     .switch input:checked + .slider:before {
         transform: translateX(18px);
     }
 }
+
+/* Иконка глаза */
+.eye-icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    color: #888;
+    transition: color 0.3s ease;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+    .eye-icon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+/* Текст рядом с иконкой */
+.eye-label {
+    font-size: 1rem;
+    color: #e0e0e0;
+    user-select: none; /* текст не выделяется */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default; /* чтобы курсор не менялся */
+    pointer-events: none; /* запрещает клики по этому блоку */
+}
+
+/* Если хотите менять цвет текста при включенном фильтре — раскомментируйте */
+/* 
+.switch input:checked ~ .eye-label {
+    color: #ff4444;
+}
+*/
+
+/* Адаптив для иконки */
+@media (max-width: 576px) {
+    .eye-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .eye-label {
+        font-size: 0.9rem;
+        gap: 6px;
+    }
+}   

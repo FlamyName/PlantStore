@@ -1,5 +1,6 @@
 using AdminPanel.ViewModels;
 using BusinessLogic.Core.Features.Commands;
+using BusinessLogic.Core.Features.Queries;
 using BusinessLogic.Core.Notification;
 using BusinessLogic.Core.Notification.Extensions;
 using BusinessLogic.ViewModels;
@@ -60,17 +61,32 @@ namespace AdminPanel.Pages
 
         public async Task<IActionResult> OnGetEditModal(int id)
         {
-            var result = await _mediator.Send(new GetProductIdQuery
+            var product = await _mediator.Send(new GetProductIdQuery
             {
                 Id = id
             });
 
-            if (result == null)
+            if (product == null)
             {
                 NotFound();
             }
 
-            return Partial("_EditProductModal", result);
+            var category = await _mediator.Send(new GetCategoryQuery());
+            var units = await _mediator.Send(new GetUnitsQuery());
+
+            var model = new EditProductViewModel
+            {
+                Id = product.Id,
+                ProductName = product.ProductName,
+                Description = product.Description,
+                CategoryId = product.CategoryId,
+                UnitId = product.UnitId,
+                Images = product.Images,
+                Category = category,
+                Units = units
+            };
+
+            return Partial("_EditProductModal", model);
         }
 
 

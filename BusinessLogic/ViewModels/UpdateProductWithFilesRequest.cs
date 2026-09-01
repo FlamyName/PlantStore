@@ -14,6 +14,8 @@ namespace BusinessLogic.ViewModels
         public string Description { get; set; }
         public int Price { get; set; }
         public int CategoryId { get; set; }
+        public int UnitId { get; set; }
+        public int Count { get; set; }
 
         public string CurrentImage1 { get; set; }
         public string CurrentImage2 { get; set; }

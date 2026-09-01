@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BusinessLogic.DB.Models;
+using Microsoft.EntityFrameworkCore;
 using PlantStore.DB.Models;
 
 namespace PlantStore.DB
@@ -16,5 +17,6 @@ namespace PlantStore.DB
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Units> Units { get; set; }
     }
 }

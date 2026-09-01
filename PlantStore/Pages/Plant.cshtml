@@ -62,11 +62,22 @@
 
         <!-- Правая часть: информация -->
         <div class="product-info">
-            <h1 class="product-title">@Model.Product.ProductName</h1>
-            <p class="product-description">
-               @Model.Product.Description
-            </p>@* 
-            <p class="product-price">@Model.Product.Price ₽</p> *@
+            <div class="container-count-price">
+                <div class="container-product-price">
+                    <p class="product-price">@Model.Product.Price ₽ / @Model.Product.NameUnit</p>
+                </div>
+                <div class="container-product-price">
+                    <p class="product-count">Кол-во: @Model.Product.Count @Model.Product.NameUnit</p>
+                </div>
+            </div>
+            <div class="container-product-title">
+                <h1 class="product-title">@Model.Product.ProductName</h1>
+            </div>
+            <div class="container-product-description">
+                <p class="product-description">
+                   @Model.Product.Description
+                </p>
+            </div>
         </div>
     </div>
 

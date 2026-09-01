@@ -24,5 +24,6 @@ namespace PlantStore.Services.DBServices.IDBServices
         Task<ProductIdViewModel?> GetProductByIdAsync(int id);
 
         Task<List<CategoryViewModel>> GetAllCategoryAsync();
+        Task<List<UnitsViewModel>> GetAllUnitsAsync();
     }
 }

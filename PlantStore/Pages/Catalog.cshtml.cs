@@ -16,7 +16,7 @@ namespace PlantStore.Pages
     {
         private readonly IMediator _mediator;
         private readonly ILogger<CatalogModel> _logger;
-        private const int PageSize = 20;
+        private const int _pageSize = 20;
 
         public IEnumerable<ProductsViewModels>? Products { get; set; }
         public IEnumerable<CategoryViewModel>? Categories { get; set; }
@@ -32,7 +32,7 @@ namespace PlantStore.Pages
         public string? Category { get; set; }
         [FromQuery]
         public bool HideOutOfStock { get; set; } = false;
-        public bool HasMorePage => TotalItems > CurrentPage * PageSize;
+        public bool HasMorePage => TotalItems > CurrentPage * _pageSize;
 
         public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger)
         {
@@ -51,7 +51,7 @@ namespace PlantStore.Pages
             await LoadItemsAsync();
             await LoadCategoriesAsync();
             return Page();
-            
+
         }
 
         public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] string? category, [FromQuery] bool hideOutOfStock, [FromQuery] int page = 2)
@@ -78,7 +78,7 @@ namespace PlantStore.Pages
                 {
                     SearchTerm = Search,
                     Category = Category,
-                    PageSize = PageSize,
+                    PageSize = _pageSize,
                     Page = CurrentPage,
                     HideOutOfStock = HideOutOfStock
                 });

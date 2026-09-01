@@ -4,19 +4,6 @@
     ViewData["Title"] = "Каталог";
 }
 <main class="product-main">
-    <form method="get" id="filterForm">
-        <input type="hidden" name="search" value="@Model.Search" />
-        <input type="hidden" name="category" value="@Model.Category" />
-        <div class="toggle-container">
-            <label class="switch">
-                <input type="checkbox" name="hideOutOfStock" value="true"
-                       @(Model.HideOutOfStock ? "checked" : "")
-                       onchange="document.getElementById('filterForm').submit()">
-                <span class="slider round"></span>
-            </label>
-            <span class="toggle-label">Скрыть товары с нулевым остатком</span>
-        </div>
-    </form>
     <nav class="category-nav">
         <ul class="category-nav-list">
             <!-- Кнопка "Все товары" -->
@@ -47,6 +34,32 @@
         </ul>
     </nav>
 
+    <form method="get" id="filterForm">
+        <input type="hidden" name="search" value="@Model.Search" />
+        <input type="hidden" name="category" value="@Model.Category" />
+        <!-- Существующий переключатель -->
+        <div class="toggle-container">
+            <span class="eye-label" aria-hidden="true">
+                Нет в наличии
+                <span class="eye-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                        <line class="eye-slash" x1="2" y1="2" x2="22" y2="22" />
+                    </svg>
+                </span>
+            </span>
+            <!-- Существующий переключатель -->
+            <label class="switch">
+                <input type="checkbox" name="hideOutOfStock" value="true"
+                       @(Model.HideOutOfStock ? "checked" : "")
+                       onchange="document.getElementById('filterForm').submit()">
+                <span class="slider round"></span>
+            </label>
+
+            <!-- Иконка глаза с текстом (не кликабельна) -->
+        </div>
+    </form>
 
     <div class="product-search">
         <div class="search-container">

@@ -1,6 +1,7 @@
-﻿@using PlantStore.ViewModels
+﻿@using BusinessLogic.ViewModels
+@using PlantStore.ViewModels
 @using AdminPanel.ViewModels
-@model ProductIdViewModel
+@model EditProductViewModel
 
 <div id="editProductModal" class="modal" style="display: none;">
     <div class="modal-content">
@@ -15,6 +16,39 @@
             <div class="form-group">
                 <label for="productName">Название товара:</label>
                 <input type="text" id="productName" name="Name" value="@Model?.ProductName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label for="productName">Количество</label>
+                <input type="text" id="count" name="Count" value="@Model?.Count" class="form-control" required />
+            </div>
+
+             <!-- Категория (выпадающий список) -->
+            <div class="form-group">
+                <label for="categorySelect">Категория:</label>
+                <select id="categorySelect" name="CategoryId" class="form-control">
+                    <option value="">Выберите категорию</option>
+                    @foreach (var cat in Model.Category)
+                    {
+                        <option value="@cat.Id" selected="@(cat.Id == Model.CategoryId)">@cat.NameCategory</option>
+                    }
+                    
+                </select>
+            </div>
+
+            <!-- Единица измерения (выпадающий список) -->
+            <div class="form-group">
+                <label for="unitSelect">Единица измерения:</label>
+                <select id="unitSelect" name="UnitId" class="form-control">
+                    <option value="">Выберите единицу</option>
+                    @foreach (var unit in Model.Units)
+                    {
+                         <option value="@unit.Id" selected="@(unit.Id == Model?.UnitId)">
+                              @unit.NameUnit
+                         </option>
+                    }
+                    
+                </select>
             </div>
 
             <div class="form-group">

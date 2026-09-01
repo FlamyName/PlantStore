@@ -38,6 +38,17 @@ namespace PlantStore.Services.DBServices
             return categoryView;
         }
 
+        public async Task<List<UnitsViewModel>> GetAllUnitsAsync()
+        {
+            var units = await _context.Units.ToListAsync();
+
+            var unitsView = _mapper.Map<List<UnitsViewModel>>(units);
+
+            _logger.LogInformation("Загружено {units.Count} единиц измерения", units.Count);
+
+            return unitsView;
+        }
+
         /// <summary>
         /// Получение всего списка элементов из таблицы Products с пагинацией
         /// </summary>
@@ -73,16 +84,6 @@ namespace PlantStore.Services.DBServices
             return pagedResult;
         }
 
-
-
-        ///<summary>
-        ///Получение списка элементов из таблицы Products по категории с пагинацией
-        /// </summary> 
-        //public async Task<PagedResult<ProductsViewModels>> GetProductsByCategoryAsync(int page, int pageSize)
-        //{
-
-        //}
-
         /// <summary>
         /// Получение списка элементов из таблицы Products по заданному значению name с пагинацией
         /// </summary>
@@ -99,7 +100,7 @@ namespace PlantStore.Services.DBServices
 
             if (hideOutOfStock)
             {
-                query = query.Where(p => p.Count > 0); // 👈 Фильтр
+                query = query.Where(p => p.Count > 0);
             }
 
             var pagedResult = await query
@@ -126,6 +127,8 @@ namespace PlantStore.Services.DBServices
             var product = await _context.Products
                 .AsNoTracking()
                 .Include(x => x.Images.OrderBy(x => x.DisplayOrder))
+                .Include(x => x.Units)
+                .Include(x => x.Category)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (product == null)
@@ -140,7 +143,10 @@ namespace PlantStore.Services.DBServices
                 ProductName = product.ProductName,
                 Price = product.Price,
                 Description = product.Description,
-                CategoryId = product.CategoryId,
+                CategoryName = product.Category.NameCategory,
+                CategoryId = product.Category.Id,
+                NameUnit = product.Units.NameUnit,
+                UnitId = product.Units.Id,
                 Images = product.Images.Select(x => new ProductImageViewModel
                 {
                     Id = x.Id,

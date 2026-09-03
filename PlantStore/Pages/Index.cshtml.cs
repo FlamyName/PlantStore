@@ -1,9 +1,9 @@
+using BusinessLogic.Core.Features.Queries;
+using BusinessLogic.DB.Models;
+using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PlantStore.Core.Features.Queries;
-using PlantStore.DB.Models;
-using PlantStore.ViewModels;
 
 namespace PlantStore.Pages
 {
@@ -61,7 +61,7 @@ namespace PlantStore.Pages
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при загрузке товаров");
+                _logger.LogError(ex, "РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РЅРѕРІРѕСЃС‚РµР№");
                 News = new List<NewsViewModel>();
                 TotalItems = 0;
             }

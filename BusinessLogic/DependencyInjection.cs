@@ -1,14 +1,17 @@
-﻿using BusinessLogic.Services.BackgroundServices;
+﻿using BusinessLogic.DB;
+using BusinessLogic.Services.BackgroundServices;
+using BusinessLogic.Services.DBServices;
 using BusinessLogic.Services.DBServices.AdminService;
 using BusinessLogic.Services.DBServices.FileStorageService;
 using BusinessLogic.Services.DBServices.IDBServices;
+using BusinessLogic.Services.ImageServices;
+using BusinessLogic.Services.ImageServices.IImageServices;
+using BusinessLogic.Services.ValidationServices;
+using BusinessLogic.Services.ValidationServices.IValidationServices;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PlantStore.DB;
-using PlantStore.Services.DBServices;
-using PlantStore.Services.DBServices.IDBServices;
 using System.Reflection;
 
 namespace BusinessLogic
@@ -36,6 +39,8 @@ namespace BusinessLogic
             services.AddScoped<INewsServices, NewsServices>();
             services.AddScoped<IAdminCatalogService, AdminCatalogService>();
             services.AddScoped<IFileStorageService, FileStorageService>();
+            services.AddScoped<IImageResolver, ImageResolver>();
+            services.AddScoped<IImageValidationService, ImageValidationService>();
 
             services.AddHostedService<TempFileCleanupService>();
 

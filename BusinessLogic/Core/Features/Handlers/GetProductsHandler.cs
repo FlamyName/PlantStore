@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using BusinessLogic.Core.Features.Queries;
+using BusinessLogic.Services.DBServices.IDBServices;
+using BusinessLogic.ViewModels;
+using MediatR;
 using Microsoft.Extensions.Logging;
-using PlantStore.Core.Features.Queries;
-using PlantStore.Services.DBServices.IDBServices;
-using PlantStore.ViewModels;
 
-namespace PlantStore.Core.Features.Handlers
+namespace BusinessLogic.Core.Features.Handlers
 {
     /// <summary>
     /// Обработчик запроса <see cref="GetProductsQuery"/>

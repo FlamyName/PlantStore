@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using BusinessLogic.DB;
+using BusinessLogic.DB.Models;
 using BusinessLogic.Extensions;
+using BusinessLogic.Services.DBServices.IDBServices;
+using BusinessLogic.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PlantStore.DB;
-using PlantStore.DB.Models;
-using PlantStore.Services.DBServices.IDBServices;
-using PlantStore.ViewModels;
 
-namespace PlantStore.Services.DBServices
+namespace BusinessLogic.Services.DBServices
 {
     /// <summary>
     /// Service для работы или преобразования данных из таблицы News

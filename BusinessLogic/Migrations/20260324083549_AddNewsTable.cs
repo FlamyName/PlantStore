@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PlantStore.Migrations
+namespace BusinessLogic.Migrations
 {
     /// <inheritdoc />
     public partial class AddNewsTable : Migration

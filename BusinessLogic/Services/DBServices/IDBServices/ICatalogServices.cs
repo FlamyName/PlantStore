@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.ViewModels;
-using PlantStore.ViewModels;
 
-namespace PlantStore.Services.DBServices.IDBServices
+namespace BusinessLogic.Services.DBServices.IDBServices
 {
     /// <summary>
     /// Interface реализующий сервис CatalogServices

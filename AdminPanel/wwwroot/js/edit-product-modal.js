@@ -160,6 +160,10 @@
                 currentModal = $('#editProductModal');
                 currentModal.show();
 
+                // ✅ Заблокировать прокрутку основной страницы
+                $('body').addClass('modal-open');
+                $('html').addClass('modal-open');
+
                 // ✅ Кнопка сохранить заблокирована по умолчанию
                 resetFormState();
 
@@ -190,8 +194,7 @@
         });
 
         // --- Отслеживание изменений в полях формы ---
-        currentModal.off('input', '#editProductForm input, #editProductForm textarea').on('input', '#editProductForm input, #editProductForm textarea', function () {
-            // ✅ Активируем кнопку при изменении полей
+        currentModal.off('input change', '#editProductForm input, #editProductForm textarea, #editProductForm select').on('input change', '#editProductForm input, #editProductForm textarea, #editProductForm select', function () {
             enableSaveButton();
         });
 
@@ -375,6 +378,9 @@
             currentModal.hide();
             currentModal.remove();
             currentModal = null;
+            // ✅ Разблокировать прокрутку основной страницы
+            $('body').removeClass('modal-open');
+            $('html').removeClass('modal-open');
         }
     }
 

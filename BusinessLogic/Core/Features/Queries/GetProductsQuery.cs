@@ -1,7 +1,7 @@
-﻿using MediatR;
-using PlantStore.ViewModels;
+﻿using BusinessLogic.ViewModels;
+using MediatR;
 
-namespace PlantStore.Core.Features.Queries
+namespace BusinessLogic.Core.Features.Queries
 {
     /// <summary>
     /// Запрос на получение списка товаров с пагинацией

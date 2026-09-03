@@ -1,8 +1,8 @@
+using BusinessLogic.Core.Features.Queries;
+using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PlantStore.Core.Features.Queries;
-using PlantStore.ViewModels;
 
 namespace PlantStore.Pages
 {

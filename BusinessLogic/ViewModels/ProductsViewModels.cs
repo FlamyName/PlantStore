@@ -1,4 +1,4 @@
-﻿namespace PlantStore.ViewModels
+﻿namespace BusinessLogic.ViewModels
 {
     /// <summary>
     /// ViewModel для отображения данных продуктов

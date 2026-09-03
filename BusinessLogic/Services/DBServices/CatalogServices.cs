@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
+using BusinessLogic.DB;
+using BusinessLogic.DB.Models;
 using BusinessLogic.Extensions;
+using BusinessLogic.Services.DBServices.IDBServices;
 using BusinessLogic.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PlantStore.DB;
-using PlantStore.DB.Models;
-using PlantStore.Services.DBServices.IDBServices;
-using PlantStore.ViewModels;
-using System.Runtime.InteropServices;
 
-namespace PlantStore.Services.DBServices
+namespace BusinessLogic.Services.DBServices
 {
     /// <summary>
     /// Service для работы или преобразования данных из таблицы Products и связанных с ней 
@@ -143,6 +141,7 @@ namespace PlantStore.Services.DBServices
                 ProductName = product.ProductName,
                 Price = product.Price,
                 Description = product.Description,
+                Count = product.Count,
                 CategoryName = product.Category.NameCategory,
                 CategoryId = product.Category.Id,
                 NameUnit = product.Units.NameUnit,

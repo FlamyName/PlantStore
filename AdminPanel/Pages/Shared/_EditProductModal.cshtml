@@ -1,5 +1,4 @@
 ﻿@using BusinessLogic.ViewModels
-@using PlantStore.ViewModels
 @using AdminPanel.ViewModels
 @model EditProductViewModel
 
@@ -18,37 +17,36 @@
                 <input type="text" id="productName" name="Name" value="@Model?.ProductName" class="form-control" required />
             </div>
 
-            <div class="form-group">
-                <label for="productName">Количество</label>
-                <input type="text" id="count" name="Count" value="@Model?.Count" class="form-control" required />
-            </div>
+            <!-- Количество / Категория / Единица в одну строку -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="count">Количество</label>
+                    <input type="text" id="count" name="Count" value="@Model?.Count" class="form-control" required />
+                </div>
 
-             <!-- Категория (выпадающий список) -->
-            <div class="form-group">
-                <label for="categorySelect">Категория:</label>
-                <select id="categorySelect" name="CategoryId" class="form-control">
-                    <option value="">Выберите категорию</option>
-                    @foreach (var cat in Model.Category)
-                    {
-                        <option value="@cat.Id" selected="@(cat.Id == Model.CategoryId)">@cat.NameCategory</option>
-                    }
-                    
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="categorySelect">Категория:</label>
+                    <select id="categorySelect" name="CategoryId" class="form-control">
+                        <option value="">Выберите категорию</option>
+                        @foreach (var cat in Model.Category)
+                        {
+                            <option value="@cat.Id" selected="@(cat.Id == Model.CategoryId)">@cat.NameCategory</option>
+                        }
+                    </select>
+                </div>
 
-            <!-- Единица измерения (выпадающий список) -->
-            <div class="form-group">
-                <label for="unitSelect">Единица измерения:</label>
-                <select id="unitSelect" name="UnitId" class="form-control">
-                    <option value="">Выберите единицу</option>
-                    @foreach (var unit in Model.Units)
-                    {
-                         <option value="@unit.Id" selected="@(unit.Id == Model?.UnitId)">
-                              @unit.NameUnit
-                         </option>
-                    }
-                    
-                </select>
+                <div class="form-group">
+                    <label for="unitSelect">Единица измерения:</label>
+                    <select id="unitSelect" name="UnitId" class="form-control">
+                        <option value="">Выберите единицу</option>
+                        @foreach (var unit in Model.Units)
+                        {
+                             <option value="@unit.Id" selected="@(unit.Id == Model?.UnitId)">
+                                  @unit.NameUnit
+                             </option>
+                        }
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
@@ -71,7 +69,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group form-group--grow">
                 <label for="productDescription">Описание:</label>
                 <textarea id="productDescription" name="Description" class="form-control" rows="3">@Model?.Description</textarea>
             </div>

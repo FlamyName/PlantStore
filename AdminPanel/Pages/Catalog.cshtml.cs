@@ -7,8 +7,6 @@ using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PlantStore.Core.Features.Queries;
-using PlantStore.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -27,7 +25,7 @@ namespace AdminPanel.Pages
 
         [FromQuery]
         [Required]
-        [StringLength(50, ErrorMessage = "Поисковый запрос должен содержать максимум 50 символов")]
+        [StringLength(50, ErrorMessage = "РџРѕРёСЃРєРѕРІС‹Р№ Р·Р°РїСЂРѕСЃ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РјР°РєСЃРёРјСѓРј 50 СЃРёРјРІРѕР»РѕРІ")]
         public string? Search {  get; set; }
         public bool HasMorePage => TotalItems > CurrentPage * PageSize;
 
@@ -79,6 +77,7 @@ namespace AdminPanel.Pages
                 Id = product.Id,
                 ProductName = product.ProductName,
                 Description = product.Description,
+                Count = product.Count,
                 CategoryId = product.CategoryId,
                 UnitId = product.UnitId,
                 Images = product.Images,
@@ -95,38 +94,6 @@ namespace AdminPanel.Pages
         {
             try
             {
-                // 1. Проверка файла
-                if (file == null || file.Length == 0)
-                {
-                    return Partial("_ImageSlot", new ImageSlotViewModel
-                    {
-                        Index = index,
-                        Error = "Файл не выбран"
-                    });
-                }
-
-                // 2. Валидация файла (используем ваш существующий код)
-                if (file.Length > 5 * 1024 * 1024)
-                {
-                    return Partial("_ImageSlot", new ImageSlotViewModel
-                    {
-                        Index = index,
-                        Error = "Файл слишком большой (макс 5 МБ)"
-                    });
-                }
-
-                // 3. Проверка типа файла
-                var allowedTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/webp" };
-                if (!allowedTypes.Contains(file.ContentType.ToLowerInvariant()))
-                {
-                    return Partial("_ImageSlot", new ImageSlotViewModel
-                    {
-                        Index = index,
-                        Error = "Недопустимый формат изображения"
-                    });
-                }
-
-                // 4. Сохраняем файл
                 var command = new UploadTempImageCommand { File = file };
                 var result = await _mediator.Send(command);
 
@@ -135,14 +102,14 @@ namespace AdminPanel.Pages
                     return Partial("_ImageSlot", new ImageSlotViewModel
                     {
                         Index = index,
-                        Error = result.ErrorMessage ?? "Ошибка загрузки"
+                        Error = result.ErrorMessage ?? "РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё"
                     });
                 }
 
-                // 5. Сохраняем URL в TempData для возможного использования
+                // 5. РЎРѕС…СЂР°РЅСЏРµРј URL РІ TempData РґР»СЏ РІРѕР·РјРѕР¶РЅРѕРіРѕ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ
                 TempData["UploadedImageUrl"] = result.Url;
 
-                // 6. Возвращаем обновленный слот с временным URL
+                // 6. Р’РѕР·РІСЂР°С‰Р°РµРј РѕР±РЅРѕРІР»РµРЅРЅС‹Р№ СЃР»РѕС‚ СЃ РІСЂРµРјРµРЅРЅС‹Рј URL
                 return Partial("_ImageSlot", new ImageSlotViewModel
                 {
                     Index = index,
@@ -152,7 +119,7 @@ namespace AdminPanel.Pages
             }
             catch (ArgumentException ex)
             {
-                _logger.LogWarning(ex, "Ошибка валидации при загрузке изображения");
+                _logger.LogWarning(ex, "РћС€РёР±РєР° РІР°Р»РёРґР°С†РёРё РїСЂРё Р·Р°РіСЂСѓР·РєРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ");
                 return Partial("_ImageSlot", new ImageSlotViewModel
                 {
                     Index = index,
@@ -161,16 +128,16 @@ namespace AdminPanel.Pages
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при загрузке временного файла");
+                _logger.LogError(ex, "РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РІСЂРµРјРµРЅРЅРѕРіРѕ С„Р°Р№Р»Р°");
                 return Partial("_ImageSlot", new ImageSlotViewModel
                 {
                     Index = index,
-                    Error = "Произошла ошибка при загрузке изображения"
+                    Error = "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ"
                 });
             }
         }
 
-        //  НОВЫЙ МЕТОД: Удаление изображения из слота
+        //  РќРћР’Р«Р™ РњР•РўРћР”: РЈРґР°Р»РµРЅРёРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РёР· СЃР»РѕС‚Р°
         public IActionResult OnPostRemoveImage(int index)
         {
             return Partial("_ImageSlot", new ImageSlotViewModel
@@ -187,22 +154,17 @@ namespace AdminPanel.Pages
         {
             try
             {
-                var command = new UpdateProductFilesCommand
+                var command = new UpdateProductCommand
                 {
                     Id = request.Id,
                     Name = request.Name,
                     Description = request.Description,
                     Price = request.Price,
-                    CurrentImage1 = request.CurrentImage1,
-                    CurrentImage2 = request.CurrentImage2,
-                    CurrentImage3 = request.CurrentImage3,
-                    CurrentImage4 = request.CurrentImage4,
-                    CurrentImage5 = request.CurrentImage5,
-                    TempImage1 = request.TempImage1,
-                    TempImage2 = request.TempImage2,
-                    TempImage3 = request.TempImage3,
-                    TempImage4 = request.TempImage4,
-                    TempImage5 = request.TempImage5,
+                    CategoryId = request.CategoryId,
+                    Count = request.Count,
+                    UnitId = request.UnitId,
+                    CurrentImages = request.CurrentImages,
+                    TempImages = request.TempImages,
                 };
 
                 var result = await _mediator.Send(command);
@@ -211,7 +173,7 @@ namespace AdminPanel.Pages
                 {
                     return Partial("_Notification", new NotificationViewModel
                     {
-                        Message = "Товар успешно обновлён!",
+                        Message = "РўРѕРІР°СЂ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»С‘РЅ!",
                         Type = NotificationType.Success.ToNotificationType()
                     });
                 }
@@ -219,17 +181,17 @@ namespace AdminPanel.Pages
                 {
                     return Partial("_Notification", new NotificationViewModel
                     {
-                        Message = "Товар не найден",
+                        Message = "РўРѕРІР°СЂ РЅРµ РЅР°Р№РґРµРЅ",
                         Type = NotificationType.Error.ToNotificationType()
                     });
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при обновлении товара Id {Id}", request.Id);
+                _logger.LogError(ex, "РћС€РёР±РєР° РїСЂРё РѕР±РЅРѕРІР»РµРЅРёРё С‚РѕРІР°СЂР° Id {Id}", request.Id);
                 return Partial("_Notification", new NotificationViewModel
                 {
-                    Message = "Ошибка при обновлении: " + ex.Message,
+                    Message = "РћС€РёР±РєР° РїСЂРё РѕР±РЅРѕРІР»РµРЅРёРё: " + ex.Message,
                     Type = NotificationType.Error.ToNotificationType()
                 });
             }
@@ -252,7 +214,7 @@ namespace AdminPanel.Pages
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при загрузке товаров");
+                _logger.LogError(ex, "РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ С‚РѕРІР°СЂРѕРІ");
                 Products = new List<ProductsViewModels>();
                 TotalItems = 0;
             }

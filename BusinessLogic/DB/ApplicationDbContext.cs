@@ -1,8 +1,7 @@
 ﻿using BusinessLogic.DB.Models;
 using Microsoft.EntityFrameworkCore;
-using PlantStore.DB.Models;
 
-namespace PlantStore.DB
+namespace BusinessLogic.DB
 {
     /// <summary>
     /// DbContext для подключения к базе данных 

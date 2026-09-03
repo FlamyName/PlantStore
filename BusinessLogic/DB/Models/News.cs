@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PlantStore.DB.Models
+namespace BusinessLogic.DB.Models
 {
     /// <summary>
     /// Таблица новостей в БД

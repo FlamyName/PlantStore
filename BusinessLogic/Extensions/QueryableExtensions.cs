@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using BusinessLogic.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using PlantStore.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Extensions
 {

@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogic.DB.Models;
 using BusinessLogic.ViewModels;
-using PlantStore.DB.Models;
-using PlantStore.ViewModels;
-
-namespace PlantStore.Services.AutoMapper
+namespace BusinessLogic.Services.AutoMapper
 {
     public class CatalogMappingProfile : Profile
     {

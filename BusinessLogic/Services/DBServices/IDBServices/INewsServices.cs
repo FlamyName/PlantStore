@@ -1,6 +1,6 @@
-﻿using PlantStore.ViewModels;
+﻿using BusinessLogic.ViewModels;
 
-namespace PlantStore.Services.DBServices.IDBServices
+namespace BusinessLogic.Services.DBServices.IDBServices
 {
     /// <summary>
     /// Interface реализующий сервис NewsServices

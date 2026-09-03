@@ -2,8 +2,8 @@
 
 <div class="image-slot" data-index="@Model.Index" data-url="@Model.Url">
     <!-- Скрытые поля -->
-    <input type="hidden" name="CurrentImage@(Model.Index)" value="@Model.Url" />
-    <input type="hidden" name="TempImage@(Model.Index)" value="@Model.TempUrl" />
+    <input type="hidden" name="CurrentImages[@(Model.Index - 1)]" value="@Model.Url" />
+    <input type="hidden" name="TempImages[@(Model.Index - 1)]" value="@Model.TempUrl" />
 
     <!-- Содержимое слота -->
     <div class="slot-content">

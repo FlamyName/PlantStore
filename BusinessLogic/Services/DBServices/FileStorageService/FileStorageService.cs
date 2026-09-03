@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Services.DBServices.IDBServices;
+using BusinessLogic.Services.ValidationServices.IValidationServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -14,31 +15,24 @@ namespace BusinessLogic.Services.DBServices.FileStorageService
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<FileStorageService> _logger;
+        private readonly IImageValidationService _validator;
         private readonly string _tempFolder;
 
-        public FileStorageService(IWebHostEnvironment webHostEnvironment, ILogger<FileStorageService> logger)
+        public FileStorageService(IWebHostEnvironment webHostEnvironment, ILogger<FileStorageService> logger, IImageValidationService imageValidationService)
         {
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
             _tempFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "temp");
+            _validator = imageValidationService;
         }
         /// <summary>
         /// Сохраняет файл во временную папку и возвращает временный URL.
         /// </summary>
         public async Task<string> UploadTempFileAsync(IFormFile file)
         {
-            if (file == null || file.Length == 0)
-                throw new ArgumentException("Файл не выбран", nameof(file));
-
-            // Проверка типа файла
-            var allowedTypes = new[] { "image/jpeg", "image/png", "image/gif", "image/webp", "image/svg+xml" };
-            if (!allowedTypes.Contains(file.ContentType))
-                throw new InvalidOperationException("Недопустимый формат файла. Только изображения.");
-
-            if (!IsValidImageSignature(file))
-            {
-                throw new InvalidOperationException("Файл не является изображением");
-            }
+            var error = _validator.Validate(file);
+            if (error != null) 
+                throw new ArgumentException(error);
 
             // Генерируем уникальное имя
             var fileName = $"{Guid.NewGuid():N}_{Path.GetFileName(file.FileName)}";
@@ -155,35 +149,7 @@ namespace BusinessLogic.Services.DBServices.FileStorageService
             return Task.CompletedTask;
         }
 
-        private bool IsValidImageSignature(IFormFile file)
-        {
-            using var stream = file.OpenReadStream();
-            byte[] header = new byte[8];
-            stream.Read(header, 0, 8);
-            stream.Position = 0;
-
-            // JPEG
-            if (header[0] == 0xFF && header[1] == 0xD8 && header[2] == 0xFF)
-                return true;
-
-            // PNG
-            if (header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4E && header[3] == 0x47)
-                return true;
-
-            // GIF
-            if (header[0] == 0x47 && header[1] == 0x49 && header[2] == 0x46 && header[3] == 0x38)
-                return true;
-
-            // WebP
-            if (header[0] == 0x52 && header[1] == 0x49 && header[2] == 0x46 && header[3] == 0x46)
-                return true;
-
-            // BMP
-            if (header[0] == 0x42 && header[1] == 0x4D)
-                return true;
-
-            return false;
-        }
+        
 
     }
 }

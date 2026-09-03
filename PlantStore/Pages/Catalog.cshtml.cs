@@ -5,8 +5,6 @@ using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PlantStore.Core.Features.Queries;
-using PlantStore.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 
@@ -24,11 +22,11 @@ namespace PlantStore.Pages
         public int CurrentPage { get; set; } = 1;
 
         [FromQuery]
-        [StringLength(50, ErrorMessage = "Поисковый запрос должен содержать максимум 50 символов")]
+        [StringLength(50, ErrorMessage = "РџРѕРёСЃРєРѕРІС‹Р№ Р·Р°РїСЂРѕСЃ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ РјР°РєСЃРёРјСѓРј 50 СЃРёРјРІРѕР»РѕРІ")]
         public string? Search {  get; set; }
 
         [FromQuery]
-        [StringLength(20, ErrorMessage = "Поисковый запрос должен содержать максимум 20 символов")]
+        [StringLength(20, ErrorMessage = "РќР°Р·РІР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ 20 СЃРёРјРІРѕР»РѕРІ")]
         public string? Category { get; set; }
         [FromQuery]
         public bool HideOutOfStock { get; set; } = false;
@@ -88,7 +86,7 @@ namespace PlantStore.Pages
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при загрузке товаров");
+                _logger.LogError(ex, "РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ С‚РѕРІР°СЂРѕРІ");
                 Products = new List<ProductsViewModels>();
                 TotalItems = 0;
             }
@@ -104,7 +102,7 @@ namespace PlantStore.Pages
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при загрузке Категорий");
+                _logger.LogError(ex, "РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РєР°С‚РµРіРѕСЂРёР№");
                 Categories = new List<CategoryViewModel>();
             }
         }

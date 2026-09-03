@@ -1,6 +1,4 @@
-﻿using PlantStore.DB.Models;
-
-namespace PlantStore.ViewModels
+﻿namespace BusinessLogic.ViewModels
 {
     /// <summary>
     /// ViewModel для отображения данных конкретного продукта
@@ -15,7 +13,7 @@ namespace PlantStore.ViewModels
         public string CategoryName { get; set; }
         public int UnitId { get; set; }    
         public string NameUnit { get; set; }
-        public int Count { get; set; }
+        public int? Count { get; set; }
         public List<ProductImageViewModel> Images { get; set; }
     }
 }

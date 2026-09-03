@@ -1,13 +1,8 @@
 ﻿using BusinessLogic.Core.Features.Queries;
+using BusinessLogic.Services.DBServices.IDBServices;
 using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using PlantStore.Services.DBServices.IDBServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Core.Features.Handlers
 {

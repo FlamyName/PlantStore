@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace PlantStore.Migrations
+namespace BusinessLogic.Migrations
 {
     /// <inheritdoc />
     public partial class AddUnitsTableV11 : Migration

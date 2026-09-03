@@ -1,4 +1,6 @@
+using AdminPanel.Profiles;
 using BusinessLogic;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,11 @@ builder.Services.Configure<RouteOptions>(options =>
 
 
 builder.Services.AddBusinessLogic(builder.Configuration);
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddMaps(Assembly.GetExecutingAssembly());
+});
 
 var app = builder.Build();
 

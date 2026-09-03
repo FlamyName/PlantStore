@@ -1,4 +1,5 @@
 using AdminPanel.ViewModels;
+using AutoMapper;
 using BusinessLogic.Core.Features.Commands;
 using BusinessLogic.Core.Features.Queries;
 using BusinessLogic.Core.Notification;
@@ -16,6 +17,7 @@ namespace AdminPanel.Pages
     public class CatalogModel : PageModel
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
         private readonly ILogger<CatalogModel> _logger;
         private const int PageSize = 20;
 
@@ -29,10 +31,11 @@ namespace AdminPanel.Pages
         public string? Search {  get; set; }
         public bool HasMorePage => TotalItems > CurrentPage * PageSize;
 
-        public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger)
+        public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger, IMapper mapper)
         {
             _mediator = mediator;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -72,18 +75,9 @@ namespace AdminPanel.Pages
             var category = await _mediator.Send(new GetCategoryQuery());
             var units = await _mediator.Send(new GetUnitsQuery());
 
-            var model = new EditProductViewModel
-            {
-                Id = product.Id,
-                ProductName = product.ProductName,
-                Description = product.Description,
-                Count = product.Count,
-                CategoryId = product.CategoryId,
-                UnitId = product.UnitId,
-                Images = product.Images,
-                Category = category,
-                Units = units
-            };
+            var model = _mapper.Map<EditProductViewModel>(product);
+            model.Category = category;
+            model.Units = units;
 
             return Partial("_EditProductModal", model);
         }
@@ -154,18 +148,7 @@ namespace AdminPanel.Pages
         {
             try
             {
-                var command = new UpdateProductCommand
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Description = request.Description,
-                    Price = request.Price,
-                    CategoryId = request.CategoryId,
-                    Count = request.Count,
-                    UnitId = request.UnitId,
-                    CurrentImages = request.CurrentImages,
-                    TempImages = request.TempImages,
-                };
+                var command = _mapper.Map<UpdateProductCommand>(request);
 
                 var result = await _mediator.Send(command);
 

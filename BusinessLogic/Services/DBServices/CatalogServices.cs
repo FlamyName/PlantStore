@@ -135,25 +135,7 @@ namespace BusinessLogic.Services.DBServices
                 return null!;
             }
 
-            var productView = new ProductIdViewModel
-            {
-                Id = product.Id,
-                ProductName = product.ProductName,
-                Price = product.Price,
-                Description = product.Description,
-                Count = product.Count,
-                CategoryName = product.Category.NameCategory,
-                CategoryId = product.Category.Id,
-                NameUnit = product.Units.NameUnit,
-                UnitId = product.Units.Id,
-                Images = product.Images.Select(x => new ProductImageViewModel
-                {
-                    Id = x.Id,
-                    DisplayOrder = x.DisplayOrder,
-                    IsMain = x.IsMain,
-                    Url = x.Url,
-                }).ToList()
-            };
+            var productView = _mapper.Map<ProductIdViewModel>(product);
 
             _logger.LogInformation("Загружен товар {productName} (Id {id} c {imageCount} изображениями)", product.ProductName, id, product.Images.Count);
 

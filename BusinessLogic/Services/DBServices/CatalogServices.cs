@@ -132,7 +132,7 @@ namespace BusinessLogic.Services.DBServices
             if (product == null)
             {
                 _logger.LogInformation("Товар с Id {id} не найден", id);
-                return null!;
+                return null;
             }
 
             var productView = _mapper.Map<ProductIdViewModel>(product);

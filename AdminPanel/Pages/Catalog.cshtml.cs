@@ -1,3 +1,4 @@
+using AdminPanel.Pages.Infrastructure.Abstractclass;
 using AdminPanel.ViewModels;
 using AutoMapper;
 using BusinessLogic.Core.Features.Commands;
@@ -7,29 +8,21 @@ using BusinessLogic.Core.Notification.Extensions;
 using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace AdminPanel.Pages
 {
-    public class CatalogModel : PageModel
+    public class CatalogModel : PagedPageModel<ProductsViewModels>
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly ILogger<CatalogModel> _logger;
-        private const int PageSize = 20;
 
-        public IEnumerable<ProductsViewModels>? Products { get; set; }
-        public int TotalItems { get; set; }
-        public int CurrentPage { get; set; } = 1;
+        public override int PageSize => 20;
 
         [FromQuery]
-        [Required]
         [StringLength(50, ErrorMessage = "Поисковый запрос должен содержать максимум 50 символов")]
         public string? Search {  get; set; }
-        public bool HasMorePage => TotalItems > CurrentPage * PageSize;
 
         public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger, IMapper mapper)
         {
@@ -43,7 +36,6 @@ namespace AdminPanel.Pages
             CurrentPage = 1;
             await LoadItemsAsync();
             return Page();
-            
         }
 
         public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] int page = 2)
@@ -54,7 +46,7 @@ namespace AdminPanel.Pages
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return Partial("_ProductItem", Products);
+                return Partial("_ProductItem", Items);
             }
 
             return RedirectToPage(new { search = searchTerm, page });
@@ -69,7 +61,7 @@ namespace AdminPanel.Pages
 
             if (product == null)
             {
-                NotFound();
+                return NotFound();
             }
 
             var category = await _mediator.Send(new GetCategoryQuery());
@@ -100,10 +92,7 @@ namespace AdminPanel.Pages
                     });
                 }
 
-                // 5. Сохраняем URL в TempData для возможного использования
-                TempData["UploadedImageUrl"] = result.Url;
-
-                // 6. Возвращаем обновленный слот с временным URL
+                //  Возвращаем обновленный слот с временным URL
                 return Partial("_ImageSlot", new ImageSlotViewModel
                 {
                     Index = index,
@@ -149,7 +138,6 @@ namespace AdminPanel.Pages
             try
             {
                 var command = _mapper.Map<UpdateProductCommand>(request);
-
                 var result = await _mediator.Send(command);
 
                 if (result)
@@ -181,7 +169,7 @@ namespace AdminPanel.Pages
 
         }
 
-        public async Task LoadItemsAsync()
+        protected override async Task LoadItemsAsync()
         {
             try
             {
@@ -192,13 +180,12 @@ namespace AdminPanel.Pages
                     Page = CurrentPage,
                 });
 
-                Products = result.Items.ToList();
-                TotalItems = result.TotalCount;
+                ApplyPage(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при загрузке товаров");
-                Products = new List<ProductsViewModels>();
+                Items = new List<ProductsViewModels>();
                 TotalItems = 0;
             }
         }

@@ -5,21 +5,17 @@ using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PlantStore.Pages.Infrastructure.Abstractclass;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.InteropServices;
 
 namespace PlantStore.Pages
 {
-    public class CatalogModel : PageModel
+    public class CatalogModel : PagedPageModel<ProductsViewModels>
     {
         private readonly IMediator _mediator;
         private readonly ILogger<CatalogModel> _logger;
-        private const int _pageSize = 20;
-
-        public IEnumerable<ProductsViewModels>? Products { get; set; }
+        public override int PageSize => 20;
         public IEnumerable<CategoryViewModel>? Categories { get; set; }
-        public int TotalItems { get; set; }
-        public int CurrentPage { get; set; } = 1;
 
         [FromQuery]
         [StringLength(50, ErrorMessage = "Поисковый запрос должен содержать максимум 50 символов")]
@@ -30,7 +26,6 @@ namespace PlantStore.Pages
         public string? Category { get; set; }
         [FromQuery]
         public bool HideOutOfStock { get; set; } = false;
-        public bool HasMorePage => TotalItems > CurrentPage * _pageSize;
 
         public CatalogModel(IMediator mediator, ILogger<CatalogModel> logger)
         {
@@ -49,7 +44,6 @@ namespace PlantStore.Pages
             await LoadItemsAsync();
             await LoadCategoriesAsync();
             return Page();
-
         }
 
         public async Task<IActionResult> OnGetLoadMoreAsync([FromQuery] string? searchTerm, [FromQuery] string? category, [FromQuery] bool hideOutOfStock, [FromQuery] int page = 2)
@@ -62,32 +56,31 @@ namespace PlantStore.Pages
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return Partial("_ProductItem", Products);
+                return Partial("_ProductItem", Items);
             }
 
             return RedirectToPage(new { search = searchTerm, category, hideOutOfStock, page });
         }
 
-        public async Task LoadItemsAsync()
+        protected override async Task LoadItemsAsync()
         {
             try
             {
-                var products = await _mediator.Send(new GetProductsQuery
+                var result = await _mediator.Send(new GetProductsQuery
                 {
                     SearchTerm = Search,
                     Category = Category,
-                    PageSize = _pageSize,
+                    PageSize = PageSize,
                     Page = CurrentPage,
                     HideOutOfStock = HideOutOfStock
                 });
 
-                Products = products.Items.ToList();
-                TotalItems = products.TotalCount;
+                ApplyPage(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при загрузке товаров");
-                Products = new List<ProductsViewModels>();
+                Items = new List<ProductsViewModels>();
                 TotalItems = 0;
             }
         }

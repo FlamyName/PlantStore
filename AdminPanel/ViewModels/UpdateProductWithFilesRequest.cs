@@ -1,4 +1,6 @@
-﻿namespace AdminPanel.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AdminPanel.ViewModels
 {
     public class UpdateProductWithFilesRequest
     {
@@ -7,6 +9,8 @@
         public string Description { get; set; }
         public int Price { get; set; }
         public int CategoryId { get; set; }
+
+        [Required(ErrorMessage = "Выберите единицу измерения")]
         public int? UnitId { get; set; }
         public int Count { get; set; }
 

@@ -11,8 +11,8 @@
         public int Price { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int UnitId { get; set; }    
-        public string NameUnit { get; set; }
+        public int? UnitId { get; set; }    
+        public string? NameUnit { get; set; }
         public int? Count { get; set; }
         public List<ProductImageViewModel> Images { get; set; }
     }

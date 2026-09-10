@@ -20,7 +20,6 @@
                 <img src="@Model.TempUrl" alt="Изображение" class="slot-image"
                      onerror="this.src='/images/placeholder.jpg'" />
             </div>
-            <button type="button" class="delete-image-btn" title="Удалить изображение">×</button>
             <span class="slot-label badge bg-warning text-dark">⏳ Временное</span>
         }
         else if (!string.IsNullOrEmpty(Model.Url))
@@ -30,7 +29,6 @@
                 <img src="@Model.Url" alt="Изображение" class="slot-image"
                      onerror="this.src='/images/placeholder.jpg'" />
             </div>
-            <button type="button" class="delete-image-btn" title="Удалить изображение">×</button>
             <span class="slot-label">@(Model.IsMain ? "★ Главное" : "#" + Model.Index)</span>
         }
         else

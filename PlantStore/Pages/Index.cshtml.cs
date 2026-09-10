@@ -4,19 +4,16 @@ using BusinessLogic.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PlantStore.Pages.Infrastructure.Abstractclass;
 
 namespace PlantStore.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PagedPageModel<NewsViewModel>
     {
         private readonly IMediator _mediator;
         private readonly ILogger<IndexModel> _logger;
-        private const int PageSize = 12;
 
-        public IEnumerable<NewsViewModel>? News { get; set; }
-        public int TotalItems { get; set; }
-        public int CurrentPage { get; set; } = 1;
-        public bool HasMorePage => TotalItems > CurrentPage * PageSize;
+        public override int PageSize => 12;
 
         public IndexModel(IMediator mediator ,ILogger<IndexModel> logger)
         {
@@ -38,13 +35,13 @@ namespace PlantStore.Pages
 
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return Partial("_NewsItem", News);
+                return Partial("_NewsItem", Items);
             }
 
             return RedirectToPage(new { page });
         }
 
-        public async Task LoadItemsAsync()
+        protected override async Task LoadItemsAsync()
         {
             try
             {
@@ -54,15 +51,15 @@ namespace PlantStore.Pages
                     Page = CurrentPage,
                 });
 
-                News = result.Items.ToList();
-                TotalItems = result.TotalCount;
+                ApplyPage(result);
+
                 _logger.LogInformation($"TotalItems: {TotalItems}, CurrentPage: {CurrentPage}, PageSize: {PageSize}");
                 _logger.LogInformation($"HasMorePage calculation: {TotalItems} > {CurrentPage} * {PageSize} = {TotalItems > CurrentPage * PageSize}");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка при загрузке новостей");
-                News = new List<NewsViewModel>();
+                Items = new List<NewsViewModel>();
                 TotalItems = 0;
             }
         }

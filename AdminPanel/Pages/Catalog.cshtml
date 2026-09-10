@@ -23,14 +23,14 @@
             </form>
         </div>
     </div>
-    @if (Model.Products == null || !Model.Products.Any())
+    @if (Model.Items == null || !Model.Items.Any())
     {
         <p>Товары не найдены по запросу</p>
     }
     else
     {
         <div class="products-grid" id="catalogGrid">
-            @await Html.PartialAsync("_ProductItem", Model.Products)
+            @await Html.PartialAsync("_ProductItem", Model.Items)
         </div>
         @if (Model.HasMorePage)
         {

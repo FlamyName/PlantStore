@@ -19,7 +19,7 @@ namespace BusinessLogic.Services.AutoMapper
                 .ForMember(x => x.NameCategory,
                     y => y.MapFrom(a => a.Category.NameCategory))
                 .ForMember(x => x.UnitName,
-                    y => y.MapFrom(a => a.Units!.NameUnit));
+                    y => y.MapFrom(a => a.Units != null ? a.Units.NameUnit : null));
 
             CreateMap<Products, ProductIdViewModel>()
                 .ForMember(dest => dest.CategoryName,
@@ -27,9 +27,9 @@ namespace BusinessLogic.Services.AutoMapper
                 .ForMember(dest => dest.CategoryId,
                     opt => opt.MapFrom(src => src.Category.Id))
                 .ForMember(dest => dest.NameUnit,
-                    opt => opt.MapFrom(src => src.Units.NameUnit))
+                    opt => opt.MapFrom(src => src.Units != null ? src.Units.NameUnit : null))
                 .ForMember(dest => dest.UnitId,
-                    opt => opt.MapFrom(src => src.Units.Id))
+                    opt => opt.MapFrom(src => src.UnitsId))
                 .ForMember(dest => dest.Images,
                     opt => opt.MapFrom(src => src.Images.OrderBy(i => i.DisplayOrder)))
                 .ForMember(dest => dest.Count,

@@ -2,23 +2,42 @@
 @model PlantStore.Pages.CatalogModel
 @{
     ViewData["Title"] = "Каталог";
+
+    string emptyMessage;
+    if (!string.IsNullOrWhiteSpace(Model.Search))
+        emptyMessage = $"По запросу «{Model.Search}» ничего не найдено.";
+    else if (!string.IsNullOrWhiteSpace(Model.Category))
+        emptyMessage = $"В категории «{Model.Category}» товаров нет.";
+    else if (Model.HideOutOfStock)
+        emptyMessage = "Подходящих товаров в наличии нет.";
+    else
+        emptyMessage = "В каталоге пока нет товаров.";
+
+    var productsError = new PlantStore.Pages.Infrastructure.ViewModels.ContentErrorViewModel
+    {
+        Message = "Не удалось загрузить товары",
+        Region = "products"
+    };
 }
+
 <main class="product-main">
     <nav class="category-nav">
-        <ul class="category-nav-list">
-            <!-- Кнопка "Все товары" -->
-            <li class="category-nav-item">
-                <a class="category-nav-link @(string.IsNullOrEmpty(Model.Category) ? "active" : "")"
-                   asp-route-category=""
-                   asp-route-search="@Model.Search"
-                   asp-route-hideOutOfStock="@Model.HideOutOfStock">
-                    Все товары
-                </a>
-            </li>
+        @if (Model.CategoriesFailed)
+        {
+            <p class="category-note">Категории временно недоступны</p>
+        }
+        else
+        {
+            <ul class="category-nav-list">
+                <li class="category-nav-item">
+                    <a class="category-nav-link @(string.IsNullOrEmpty(Model.Category) ? "active" : "")"
+                       asp-route-category=""
+                       asp-route-search="@Model.Search"
+                       asp-route-hideOutOfStock="@Model.HideOutOfStock">
+                        Все товары
+                    </a>
+                </li>
 
-            <!-- Категории -->
-            @if (Model.Categories != null)
-            {
                 @foreach (var category in Model.Categories)
                 {
                     <li class="category-nav-item">
@@ -30,14 +49,13 @@
                         </a>
                     </li>
                 }
-            }
-        </ul>
+            </ul>
+        }
     </nav>
 
     <form method="get" id="filterForm">
         <input type="hidden" name="search" value="@Model.Search" />
         <input type="hidden" name="category" value="@Model.Category" />
-        <!-- Существующий переключатель -->
         <div class="toggle-container">
             <span class="eye-label" aria-hidden="true">
                 Нет в наличии
@@ -49,15 +67,12 @@
                     </svg>
                 </span>
             </span>
-            <!-- Существующий переключатель -->
             <label class="switch">
                 <input type="checkbox" name="hideOutOfStock" value="true"
                        @(Model.HideOutOfStock ? "checked" : "")
                        onchange="document.getElementById('filterForm').submit()">
                 <span class="slider round"></span>
             </label>
-
-            <!-- Иконка глаза с текстом (не кликабельна) -->
         </div>
     </form>
 
@@ -78,13 +93,17 @@
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </button>
-
             </form>
         </div>
     </div>
-    @if (Model.Items == null || !Model.Items.Any())
+
+    @if (Model.LoadFailed)
     {
-        <p>Товары не найдены по запросу</p>
+        <partial name="_ContentError" model="productsError" />
+    }
+    else if (Model.Items == null || !Model.Items.Any())
+    {
+        <p class="empty-state">@emptyMessage</p>
     }
     else
     {
@@ -100,7 +119,7 @@
                         data-search="@Model.Search"
                         data-category="@Model.Category"
                         data-hide-out-of-stock="@Model.HideOutOfStock.ToString().ToLower()">
-                        Загрузить ещё
+                    Загрузить ещё
                 </button>
                 <div class="loading-spinner" id="loadingSpinner" style="display: none;">
                     <div class="spinner"></div>
@@ -109,6 +128,7 @@
             </div>
         }
     }
+
 </main>
 
 <input type="hidden" id="totalItems" value="@Model.TotalItems" />

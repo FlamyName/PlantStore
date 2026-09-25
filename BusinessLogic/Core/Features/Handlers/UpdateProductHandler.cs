@@ -13,25 +13,15 @@ namespace BusinessLogic.Core.Features.Handlers
     public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, bool>
     {
         private readonly IAdminCatalogService _adminCatalogService;
-        private readonly ILogger<UpdateProductHandler> _logger;
 
-        public UpdateProductHandler(IAdminCatalogService adminCatalogService, ILogger<UpdateProductHandler> logger)
+        public UpdateProductHandler(IAdminCatalogService adminCatalogService)
         {
             _adminCatalogService = adminCatalogService;
-            _logger = logger;
         }
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await _adminCatalogService.UpdateProductAsync(request);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка обновлении товара с файлами Id {id}", request.Id);
-                throw;
-            }
+            return await _adminCatalogService.UpdateProductAsync(request);
         }
     }
 }

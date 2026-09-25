@@ -139,5 +139,73 @@ body {
             background-color: #6B8E23;
         }
 
+/* === Состояние «пусто» (успешный запрос, данных нет) === */
+.empty-state {
+    color: #c9c9c9;
+    text-align: center;
+    padding: 28px 12px;
+    font-size: 1.05rem;
+}
+
+/* === Вспомогательный регион: одна приглушённая строка === */
+.category-note {
+    margin: 0;
+    padding: 8px 16px;
+    text-align: center;
+    color: #b3b3b3;
+    font-size: 0.95rem;
+}
+
+/* === Состояние «ошибка загрузки» === */
+.content-error {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    margin: 24px 0;
+    background-color: #302F2D;
+    border: 1px solid #4D4234;
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+.content-error-icon {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    color: #808000;
+}
+
+.content-error-body {
+    flex: 1;
+}
+
+.content-error-title {
+    margin: 0 0 4px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.content-error-sub {
+    margin: 0;
+    color: #b3b3b3;
+    font-size: 0.95rem;
+}
+
+.content-error-retry {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #808000;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .content-error-retry:hover {
+        background-color: #6B8E23;
+    }
 
 

@@ -162,11 +162,10 @@ namespace AdminPanel.Pages
                 _logger.LogError(ex, "Ошибка при обновлении товара Id {Id}", request.Id);
                 return Partial("_Notification", new NotificationViewModel
                 {
-                    Message = "Ошибка при обновлении: " + ex.Message,
+                    Message = "Ошибка при обновлении ",
                     Type = NotificationType.Error.ToNotificationType()
                 });
             }
-
         }
 
         protected override async Task LoadItemsAsync()

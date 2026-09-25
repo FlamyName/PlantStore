@@ -12,12 +12,10 @@ namespace BusinessLogic.Core.Features.Handlers
     public class GetNewsHandler : IRequestHandler<GetNewsQuery, PagedResult<NewsViewModel>>
     {
         private readonly INewsServices _service;
-        private readonly ILogger<GetNewsHandler> _logger;
 
-        public GetNewsHandler(INewsServices service, ILogger<GetNewsHandler> logger)
+        public GetNewsHandler(INewsServices service)
         {
             _service = service;
-            _logger = logger;
         }
 
         /// <summary>
@@ -25,19 +23,9 @@ namespace BusinessLogic.Core.Features.Handlers
         /// </summary>
         public async Task<PagedResult<NewsViewModel>> Handle(GetNewsQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await _service.GetAllNews(request.Page, request.PageSize);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка при получении списка товаров");
-                return new PagedResult<NewsViewModel>()
-                {
-                    Items = new List<NewsViewModel>(),
-                    TotalCount = 0,
-                };
-            }
+            if (request.Page == 2) throw new InvalidOperationException("Тест: догрузка");
+
+            return await _service.GetAllNews(request.Page, request.PageSize);
         }
     }
 }

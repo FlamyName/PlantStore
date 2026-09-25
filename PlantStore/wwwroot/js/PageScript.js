@@ -1,6 +1,27 @@
 ﻿(function () {
     'use strict';
 
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.content-error-retry');
+        if (!btn) return;
+        e.preventDefault();
+
+        const action = btn.dataset.retry || 'reload';
+
+        if (action === 'loadMore') {
+            const banner = btn.closest('.content-error');
+            if (banner) banner.remove();
+
+            const container = document.getElementById('loadMoreContainer');
+            if (container) container.style.display = '';   // ← ДОБАВИТЬ: показать кнопку обратно
+
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (loadMoreBtn) loadMoreBtn.click();
+            else window.location.reload();
+        }
+    });
+
+
     // Элементы
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     const loadingSpinner = document.getElementById('loadingSpinner');
@@ -51,6 +72,28 @@
         }
     };
 
+    // Статичный баннер для случая, когда ответа от сервера НЕТ вовсе
+    // (обрыв сети, DNS, офлайн). Это только разметка, никакой логики.
+    const networkErrorBanner = () =>
+        '<div class="content-error" role="alert" data-region="network">' +
+        '<div class="content-error-body">' +
+        '<p class="content-error-title">Нет соединения</p>' +
+        '<p class="content-error-sub">Проверьте интернет и попробуйте ещё раз.</p>' +
+        '</div>' +
+        '<button type="button" class="content-error-retry" data-retry="loadMore">Повторить</button>' +
+        '</div>';
+
+    // Ошибка догрузки: прячем контейнер кнопки и встаём на её место
+    const showLoadError = (html) => {
+        if (!html?.trim()) return;
+        if (!loadMoreContainer) {
+            grid.insertAdjacentHTML('beforeend', html);
+            return;
+        }
+        loadMoreContainer.style.display = 'none';
+        loadMoreContainer.insertAdjacentHTML('afterend', html);
+    };
+
     // Загрузка
     const loadMoreItems = async () => {
         if (isLoading) return;
@@ -76,7 +119,10 @@
                 headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
 
-            if (!response.ok) throw new Error();
+            if (!response.ok) {
+                showLoadError(await response.text());
+                return;
+            }
 
             const html = await response.text();
 
@@ -88,7 +134,7 @@
                 if (loadMoreContainer) loadMoreContainer.style.display = 'none';
             }
         } catch (error) {
-            alert('Ошибка загрузки. Попробуйте позже.');
+            showLoadError(networkErrorBanner());
         } finally {
             setLoading(false);
         }

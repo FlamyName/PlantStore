@@ -1,6 +1,13 @@
 ﻿body {
 }
 
+.load-error-text {
+    color: #c9c9c9;
+    text-align: center;
+    padding: 28px 12px;
+    font-size: 1.05rem;
+}
+
 .menu-product {
     display: grid;
     grid-template-columns: 150px 1fr;

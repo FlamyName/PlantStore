@@ -1,4 +1,5 @@
-﻿using BusinessLogic.DB;
+﻿using BusinessLogic.Core.Features.Behaviors;
+using BusinessLogic.DB;
 using BusinessLogic.Services.BackgroundServices;
 using BusinessLogic.Services.DBServices;
 using BusinessLogic.Services.DBServices.AdminService;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using static BusinessLogic.Core.Features.Behaviors.RequestLoggingBehavior;
 
 namespace BusinessLogic
 {
@@ -34,6 +36,8 @@ namespace BusinessLogic
                 cfg.AddMaps(Assembly.GetExecutingAssembly());
             });
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestsLoggingBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
 
             services.AddScoped<ICatalogServices, CatalogServices>();
             services.AddScoped<INewsServices, NewsServices>();

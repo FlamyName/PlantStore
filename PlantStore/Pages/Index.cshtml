@@ -2,24 +2,41 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Новости";
+
+    var newsError = new PlantStore.Pages.Infrastructure.ViewModels.ContentErrorViewModel
+    {
+        Message = "Не удалось загрузить новости",
+        Region = "news"
+    };
 }
 
-<div class="news-grid" id="newsGrid">
-    @await Html.PartialAsync("_NewsItem", Model.Items)
-</div>
-@if (Model.HasMorePage)
+@if (Model.LoadFailed)
 {
-    <div class="load-more-container" id="loadMoreContainer">
-        <button class="load-more-button"
-                id="loadMoreBtn"
-                data-page="2">
-            Загрузить ещё
-        </button>
-        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
-            <div class="spinner"></div>
-            <span>Загрузка...</span>
-        </div>
+    <partial name="_ContentError" model="newsError" />
+}
+else if (Model.Items == null || !Model.Items.Any())
+{
+    <p class="empty-state">Новостей пока нет.</p>
+}
+else
+{
+    <div class="news-grid" id="newsGrid">
+        @await Html.PartialAsync("_NewsItem", Model.Items)
     </div>
+    @if (Model.HasMorePage)
+    {
+        <div class="load-more-container" id="loadMoreContainer">
+            <button class="load-more-button"
+                    id="loadMoreBtn"
+                    data-page="2">
+                Загрузить ещё
+            </button>
+            <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                <div class="spinner"></div>
+                <span>Загрузка...</span>
+            </div>
+        </div>
+    }
 }
 
 
